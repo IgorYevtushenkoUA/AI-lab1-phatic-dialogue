@@ -85,7 +85,10 @@ function cmpWords(w1, w2) {
     //cmp like яблуками та яблук
     if (_maxWord(w1, w2).match(new RegExp(`^${_minWord(w1, w2)}[a-z]*$`)) !== null)
         return true
+    // не дуже впевнений стосовно цього бо повертає не завжди те що потрібно
     if (_minWord(w1,w2) >= 3 && _levenshteinWord(w1,w2) <= 2)
         return true
     return false
 }
+
+console.log(cmpWords("Hello", "Hello"))
