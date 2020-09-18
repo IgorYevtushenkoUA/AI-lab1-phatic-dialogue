@@ -3,11 +3,6 @@ let messages = [{
     message: "Привіт як справи",
     date: new Date()
 }]
-let similarMessage = [
-    {message: "ти", count: 0},
-    {message: "я", count: 0},
-    {message: "ми", count: 0}
-]
 
 /**
  * addNewMessage(String msg, String sender) || may change String sender -> bool sender  -> if true then person else bot
@@ -266,9 +261,6 @@ function algorithmJaroWinkler(str1, str2) {
     return jaro_dist
 }
 
-
-console.log(algorithmJaroWinkler("Привіт як ти себе почуваєш ?", "як ти себе ведеш в цій компанії ?"));
-
 /**
  * +findTheMostSimilarMessage (String: msg)
  * знайти із всіх повідомлень що були відправлені користуачем
@@ -277,6 +269,8 @@ console.log(algorithmJaroWinkler("Привіт як ти себе почуває
  */
 function findTheMostSimilarMessage(msg) {
     let msg_arr = msg.toLowerCase().split(" ")
+    let similarMessage = []
+
     for (let i = 0; i < messages.length; i++) {
         if (messages[i].sender === "person") {
             let count = 0;
@@ -298,15 +292,40 @@ function findTheMostSimilarMessage(msg) {
             }
         }
     }
+    return similarMessage
 }
 
-findTheMostSimilarMessage("Привіт друже радий тебе бачити як ти себе почуваєш ?")
-console.log(similarMessage)
-
-// todo дописати
-function compare2String(str1, str2) {
+/**
+ * ей метод перевіряє чи вхідна стрічка є схожою хоча би до 1 стрічки із всіх
+ * запитань що вже задавав користувач
+ * @param msg - вхідне питання
+ * @param s - можливий варіант
+ * @returns {boolean}
+ */
+function isQuestionRepeat(msg) {
 // перевірка на кількість слів  + алгоритмджароля +винверля
-//
+    let different = false
+    let sameWords = findTheMostSimilarMessage(msg)
+    /**
+     * @param c — количество совпадающих символов.
+     * @param a — количество символов в первой строке,
+     * @param b — количество символов во второй строке
+     * @returns {number}
+     */
+    function coeffJacquard(c, a, b) {
+        return c / (a + b - c)
+    }
+
+    if (sameWords.length > 0) {
+        let c = sameWords[0].count
+        let a = sameWords[0].message.split(" ").length
+        let b = msg.split(" ")
+        let s = sameWords[0].message
+        if ((algorithmJaroWinkler(msg, s) > 0.9) || coeffJacquard(c, a, b) > 0.9) {
+            different = true
+        }
+    }
+    return different
 }
 
 // todo дописати
@@ -319,10 +338,7 @@ function isOnlyOneQuestion(str) {
  * @param msg
  */
 function isQuestionRepeat(msg) {
-    for (let i = 0; i < messages.length; i++) {
-        // compare 2 string TODO code
-        // todo дописати
-    }
+
 }
 
 // todo дописати
@@ -345,11 +361,3 @@ function generateBotAnswer(msg) {
 
 }
 
-function test() {
-    let abc = [{a: "aa", b: 9}]
-    if (abc[0].b < 15) {
-        console.log("less")
-    }
-}
-
-test()
