@@ -1,9 +1,16 @@
-let messages = [{
-    sender: "person",
-    message: "Привіт як справи",
-    date: new Date()
-}]
+let messages = [
+    {
+        sender: "person",
+        message: "Привіт як справи",
+        date: new Date()
+    }
+]
 
+/*{
+sender: "person",
+message: "Привіт як справи",
+date: new Date()
+}*/
 /**
  * addNewMessage(String msg, String sender) || may change String sender -> bool sender  -> if true then person else bot
  * @param msg
@@ -70,8 +77,8 @@ const sendMessage = () => {
         message = modifyMessage(message)
         addMessage(message, "person")
         //generate bot answer
-        //generateBotAnswer(msg)
-        addMessage("botANSWER", "bot")
+        let botAnswer = generateBotAnswer(message)
+        addMessage(botAnswer, "bot")
 
         // showMessages()
 
@@ -104,7 +111,8 @@ function isQuestionWord(word) {
         || word === "кого" || word === "кому"
         || word === "чий"
         || word === "чому"
-        || word === "чи")
+        || word === "чи"
+        || word === "якби")
 }
 
 
@@ -270,8 +278,8 @@ function algorithmJaroWinkler(str1, str2) {
 function findTheMostSimilarMessage(msg) {
     let msg_arr = msg.toLowerCase().split(" ")
     let similarMessage = []
-
-    for (let i = 0; i < messages.length; i++) {
+//messages.length-1 аби без останнього повідомлення
+    for (let i = 0; i < messages.length - 1; i++) {
         if (messages[i].sender === "person") {
             let count = 0;
             let userMessage = messages[i].message.toLowerCase().split(" ")
@@ -281,13 +289,16 @@ function findTheMostSimilarMessage(msg) {
                         count++
                 }
             }
-            if (similarMessage[0].count < count) {
-                while (similarMessage.length !== 0)
-                    similarMessage.pop()
-                let newMsg = {message: messages[i].message, count: count}
-                similarMessage.push(newMsg)
-            } else if (similarMessage[0].count == count) {
-                let newMsg = {message: messages[i].message, count: count}
+            let newMsg = {message: messages[i].message, count: count}
+            if (similarMessage.length > 0) {
+                if (similarMessage[0].count < count) {
+                    while (similarMessage.length !== 0)
+                        similarMessage.pop()
+                    similarMessage.push(newMsg)
+                } else if (similarMessage[0].count == count) {
+                    similarMessage.push(newMsg)
+                }
+            } else {
                 similarMessage.push(newMsg)
             }
         }
@@ -295,17 +306,20 @@ function findTheMostSimilarMessage(msg) {
     return similarMessage
 }
 
+//todo тут напевно помилки
 /**
  * ей метод перевіряє чи вхідна стрічка є схожою хоча би до 1 стрічки із всіх
  * запитань що вже задавав користувач
  * @param msg - вхідне питання
- * @param s - можливий варіант
  * @returns {boolean}
  */
 function isQuestionRepeat(msg) {
 // перевірка на кількість слів  + алгоритмджароля +винверля
     let different = false
+    console.log(findTheMostSimilarMessage(msg))
     let sameWords = findTheMostSimilarMessage(msg)
+    console.log("sameWords = " + sameWords)
+
     /**
      * @param c — количество совпадающих символов.
      * @param a — количество символов в первой строке,
@@ -321,43 +335,211 @@ function isQuestionRepeat(msg) {
         let a = sameWords[0].message.split(" ").length
         let b = msg.split(" ")
         let s = sameWords[0].message
-        if ((algorithmJaroWinkler(msg, s) > 0.9) || coeffJacquard(c, a, b) > 0.9) {
+        console.log("same words = " + c)
+        if ((algorithmJaroWinkler(msg, s) > 0.9 || coeffJacquard(c, a, b) > 0.9) && c > 3) {
             different = true
         }
     }
     return different
 }
 
-// todo дописати
-function isOnlyOneQuestion(str) {
+function countQuestionsInMessage(msg) {
+    let count = 0
+    for (let i = 0; i < msg.length; i++)
+        if (msg.charAt(i) === "?")
+            count++
+    return count
+}
+
+
+function getQuestion(msg) {
+    if (countQuestionsInMessage(msg) === 1) return msg
+    else {
+        // todo дописати
+    }
+}
+
+
+function isShortAnswer(msg) {
 
 }
 
-/**
- * Перевіряє чи не повторюється слово із діалогу
- * @param msg
- */
-function isQuestionRepeat(msg) {
+function isPronoun(word) {
+    switch (word) {
+        case "я" :
+            return true
+        case "мій" :
+            return true
+        case "мене" :
+            return true
+        case "мені" :
+            return true
+        case "мною" :
+            return true
+        case "ти" :
+            return true
+        case "тебе" :
+            return true
+        case "тобі" :
+            return true
+        case "тобою" :
+            return true
+        case "ми" :
+            return true
+        case "ви" :
+            return true
+        case "вона" :
+            return true
+        case "він" :
+            return true
+        case "воно" :
+            return true
+        case "вони" :
+            return true
+        case "твій" :
+            return true
+        case "наш" :
+            return true
+        case "ваш" :
+            return true
+        case "його" :
+            return true
+        case "її" :
+            return true
+        case "їх" :
+            return true
+        case "їхній" :
+            return true
+        case "той" :
+            return true
+        case "кожен" :
+            return true
+        case "хто" :
+            return true
+        case "кожний" :
+            return true
+        case "жодний" :
+            return true
+        case "жоден" :
+            return true
+        case "іниший" :
+            return true
+        case "сам" :
+            return true
+        case "сама" :
+            return true
+        case "самий" :
+            return true
+        case "ніхто" :
+            return true
+        default:
+            return false
+    }
+}
 
+function changePronoun(pronoun) {
+    switch (pronoun) {
+        case "я" :
+            return "ти"
+        case "мій" :
+            return "твій"
+        case "мене" :
+            return "тебе"
+        case "мені" :
+            return "тобі"
+        case "мною" :
+            return "тобою"
+        case "ти" :
+            return "я"
+        case "тебе" :
+            return "мене"
+        case "тобі" :
+            return "мені"
+        case "тобою" :
+            return "мною"
+        case "ми" :
+            return "ми"
+        case "ви" :
+            return "ми"
+        case "вона" :
+            return "вона"
+        case "він" :
+            return "він"
+        case "воно" :
+            return "воно"
+        case "вони" :
+            return "вони"
+        case "твій" :
+            return "мій"
+        case "наш" :
+            return "наш"
+        case "ваш" :
+            return "ваш"
+        case "його" :
+            return "його"
+        case "її" :
+            return "її"
+        case "їх" :
+            return "їх"
+        case "їхній" :
+            return "їхній"
+        case "той" :
+            return "цей"
+        case "кожен" :
+            return "кожен"
+        case "хто" :
+            return "хто"
+        case "кожний" :
+            return "кожний"
+        case "жодний" :
+            return "жодний"
+        case "жоден" :
+            return "жоден"
+        case "іниший" :
+            return "інший"
+        case "сам" :
+            return "сам"
+        case "сама" :
+            return "сама"
+        case "самий" :
+            return "самий"
+        case "ніхто" :
+            return "ніхто"
+
+    }
 }
 
 // todo дописати
 function generateBotAnswer(msg) {
     // isQuestionRepeat(msg)
     if (isQuestion(msg)) {
+        console.log("isQuestion(msg)")
         if (isQuestionRepeat(msg)) {
-            // code
+            // code tha say that questions repeat
+            alert("ти вже це казав")
+            console.log("ти вже це казав")
         } else {
             //delete -- ?
             msg = msg.slice(0, msg.length)
-            if (isOneQuestion) {
+            msg = getQuestion(msg)
+
+            let questionWord = findQuestionWord(msg)
+            debugger
+            if (questionWord === "") {
+                // ти - я/ тобі - мені і інакші перетворення
             } else {
-                let questionWord = findQuestionWord(msg)
+
+
             }
         }
     } else {
+        if (isShortAnswer(msg)) {
 
+        } else {
+
+        }
     }
-
+    return "бот хз"
 }
+
 
