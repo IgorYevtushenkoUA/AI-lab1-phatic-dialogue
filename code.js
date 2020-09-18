@@ -107,14 +107,13 @@ function isQuestionWord(word) {
         || word === "що" || word === "який"
         || word === "коли" || word === "котрій"
         || word === "де" || word === "куди"
-        || word === "яка" || word === "яке" || word === "які" || word === "котрий" || word === ""
+        || word === "яка" || word === "яке" || word === "які" || word === "котрий"
         || word === "кого" || word === "кому"
         || word === "чий"
         || word === "чому"
         || word === "чи"
-        || word === "якби")
+        || word === "якби" || word === "якщо")
 }
-
 
 /**
  * + findQuestionWord(String msg)
@@ -175,7 +174,6 @@ function arrayEquals(a, b) {
 function intToFloat(num, decPlaces = 4) {
     return num.toFixed(decPlaces);
 }
-
 
 function jaro_distance(str1_arr_same, str2_arr_same) {
     console.log('str1_arr_same = ' + str1_arr_same)
@@ -278,7 +276,7 @@ function algorithmJaroWinkler(str1, str2) {
 function findTheMostSimilarMessage(msg) {
     let msg_arr = msg.toLowerCase().split(" ")
     let similarMessage = []
-//messages.length-1 аби без останнього повідомлення
+    //messages.length-1 аби без останнього повідомлення
     for (let i = 0; i < messages.length - 1; i++) {
         if (messages[i].sender === "person") {
             let count = 0;
@@ -306,13 +304,13 @@ function findTheMostSimilarMessage(msg) {
     return similarMessage
 }
 
-//todo тут напевно помилки
 /**
  * ей метод перевіряє чи вхідна стрічка є схожою хоча би до 1 стрічки із всіх
  * запитань що вже задавав користувач
  * @param msg - вхідне питання
  * @returns {boolean}
  */
+//todo тут напевно помилки
 function isQuestionRepeat(msg) {
 // перевірка на кількість слів  + алгоритмджароля +винверля
     let different = false
@@ -351,17 +349,18 @@ function countQuestionsInMessage(msg) {
     return count
 }
 
-
+//todo improve
 function getQuestion(msg) {
     if (countQuestionsInMessage(msg) === 1) return msg
     else {
-        // todo дописати
+        // todo дописати якщо в повідомленні більше ніж 1 питання
+        return msg
     }
 }
 
-
+//todo дописати
 function isShortAnswer(msg) {
-
+    return true
 }
 
 function isPronoun(word) {
@@ -431,6 +430,8 @@ function isPronoun(word) {
         case "самий" :
             return true
         case "ніхто" :
+            return true
+        case "себе" :
             return true
         default:
             return false
@@ -509,6 +510,117 @@ function changePronoun(pronoun) {
     }
 }
 
+// only for present tie
+function isVerb(word) {
+    if (word.length <= 2) return false
+    if (word.slice(word.length - 2, word.length) === "еш" ||
+        word.slice(word.length - 2, word.length) === "єш" ||
+        word.slice(word.length - 2, word.length) === "иш" ||
+        word.slice(word.length - 2, word.length) === "їш" ||
+        word.slice(word.length - 2, word.length) === "ти")
+        return true
+}
+
+function getVerbTime(v) {
+    // past - present - future
+    switch (word.slice(word.length - 2, word.length)) {
+        case "еш" :
+            return "present"
+        case "єш" :
+            return "present"
+        case "иш" :
+            return "present"
+        case "їш" :
+            return "present"
+        case "ти" :
+            return "inf"
+        default:
+            return ""
+    }
+}
+
+// work only with present time
+function changeVerb(v, time = "inf") {
+    if (time === "present")
+        return v.slice(0, v.length - 2) + "ю"
+    return v
+}
+
+/**
+ * із питання повертає масив змінених слів
+ * займенники - я -> ти
+ * дієслова - робиш [иш,їш,еш,єш] -> ю  працюэш -> працюю
+ * все інше не змінюється
+ * @param msg
+ * @returns {[]}
+ */
+function changeQuestionToAnswer(msg) {
+    let msg_arr = msg.toLowerCase().split(" ")
+    let msg_changed = []
+    for (let w of msg_arr) {
+        if (isPronoun(w))
+            msg_changed.push(changePronoun(w))
+        else if (isVerb(w)) {
+            let time = getVerbTime(w)
+            msg_changed.push(changeVerb(w, time))
+        } else
+            msg_changed.push(w)
+    }
+    return msg_changed
+}
+
+
+/**
+ * QW- question word , Pr-pronoun , \\- another sentence
+ * QW + \\
+ * QW + \\ + Pr
+ * QW + \\ + Pr + \\
+ * Qw + Pr
+ * Qw + Pr + \\
+ * Pr + \\
+ * \\ + всі попередні варіанти
+ * @param msg
+ */
+function getSentenceStructure(msg, qw = "") {
+    let sentenceStructure = []
+    let msg_arr = msg.toLowerCase().split(" ")
+    for (let w of msg_arr) {
+        if (isQuestionWord(w)) {
+            if (qw !== "" && w === qw)
+                sentenceStructure.push("QW")
+        } else if (isPronoun(w)) {
+            sentenceStructure.push("Pr")
+        } else {
+            if ((sentenceStructure.length > 0
+                && sentenceStructure[sentenceStructure.length - 1] !== "//")
+                // ||sentenceStructure.length === 0
+            )
+                sentenceStructure.push("//")
+        }
+    }
+    //     [ 'QW', '//', 'Pr', '//' ]
+    //     [ 'QW', '//', 'Pr' ]
+    //     [ 'QW', '//' ]
+    //     [ 'QW', 'Pr', '//' ]
+    //     [ 'QW', 'Pr' ]
+    //     [ 'Pr', '//' ]
+    let sentence = sentenceStructure.join(" ")
+    let rex_qw_$_pr_$ = new RegExp(`^QW // Pr //`)
+    let rex_qw_$_pr = new RegExp(`^QW // Pr`)
+    let rex_qw_$ = new RegExp(`^QW //`)
+    let rex_qw_pr_$ = new RegExp(`^QW Pr //`)
+    let rex_qw_pr = new RegExp(`^QW Pr`)
+    let rex_pr_$ = new RegExp(`^Pr //`)
+
+    let structure = [['QW', '//', 'Pr', '//'], ['QW', '//', 'Pr'], ['QW', '//'], ['QW', 'Pr', '//'], ['QW', 'Pr'], ['Pr', '//']]
+    let structures_reg = [rex_qw_$_pr_$, rex_qw_$_pr, rex_qw_$, rex_qw_pr_$, rex_qw_pr, rex_pr_$]
+    for (let i = 0; i < structures_reg.length; i++) {
+        if (sentence.match(structures_reg[i]) !== null)
+            return structure[i]
+    }
+    return sentenceStructure
+}
+
 // todo дописати
 function generateBotAnswer(msg) {
     // isQuestionRepeat(msg)
@@ -524,12 +636,98 @@ function generateBotAnswer(msg) {
             msg = getQuestion(msg)
 
             let questionWord = findQuestionWord(msg)
-            debugger
+            let question_arr = changeQuestionToAnswer(msg)
+
+            let sentenceStructure = getSentenceStructure(msg, questionWord)
+            //     [ 'QW', '//', 'Pr', '//' ]
+            //     [ 'QW', '//', 'Pr' ]
+            //     [ 'QW', '//' ]
+            //     [ 'QW', 'Pr', '//' ]
+            //     [ 'QW', 'Pr' ]
+            //     [ 'Pr', '//' ]
             if (questionWord === "") {
-                // ти - я/ тобі - мені і інакші перетворення
+                let text_before_pronoun = []
+                let text_after_pronoun = []
+                let text_after_question = []
+                let pronoun = []
+                let question = []
+                let nothing = []
+                if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr', '//'])) {
+                    for (let w of sentenceStructure) {
+                        if (question.length > 0) {
+                            if (w == questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push(w)
+                            else {
+                                if (pronoun.length === 0)
+                                    text_before_pronoun.push(w)
+                                else text_after_pronoun.push(w)
+                            }
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    let answer = pronoun +"|" + text_before_pronoun +"|" + text_after_pronoun
+                } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
+                    for (let w of sentenceStructure) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push (w)
+                            else if (pronoun.length == 0)
+                                text_before_pronoun.push(w)
+                        }else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+
+                    let answer = pronoun + "|" +text_before_pronoun
+                } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
+                    for (let w of sentenceStructure) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (question.length > 0)
+                                text_after_question.push(w)
+                        }else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    let answer = text_after_question + "|"
+
+                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
+                    for (let w of sentenceStructure) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push (w)
+                            else if (pronoun.length > 0)
+                                text_after_pronoun.push(w)
+                        }else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    let answer = pronoun + "|" +text_after_pronoun
+                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
+
+                    for (let w of sentenceStructure) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push (w)
+                        }else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    let answer = pronoun
+                } else {
+                    let answer = []
+                }
+
             } else {
+                if (arrayEquals(sentenceStructure, ['Pr', '//'])) {
 
-
+                }
+                // todo тре подумать
             }
         }
     } else {
@@ -541,5 +739,11 @@ function generateBotAnswer(msg) {
     }
     return "бот хз"
 }
+
+function test(arr) {
+
+}
+
+console.log("QW // v".match(new RegExp(`^QW //`)))
 
 
