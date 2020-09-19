@@ -11,7 +11,7 @@
 
 */
 
-let data_common_question = {
+export let data_common_question = {
     how: {
         0: {question: "Як часто ви купуєте одяг?", answer: {answer: "", answer_question: ""},},
         1: {question: "Скільки мов ви знаєте?", answer: {answer: "", answer_question: ""},},
@@ -20,7 +20,7 @@ let data_common_question = {
         4: {question: "Скільки пар взуття у вас?", answer: {answer: "", answer_question: ""},},
         5: {question: "скільки у тебе", answer: {answer: "", answer_question: ""},},
     },
-    who : {
+    who: {
         0: {question: "хто твій герой?", answer: {answer: "", answer_question: ""},},
         1: {question: "Ким ви хотіли бути, коли були маленькими?", answer: {answer: "", answer_question: ""},},
         2: {question: "Ким хоче стати ваша дитина, коли він виросте?", answer: {answer: "", answer_question: ""},},
@@ -42,7 +42,10 @@ let data_common_question = {
         6: {question: "Що є найбільшим досягненням для вашої дитини?", answer: {answer: "", answer_question: ""},},
         7: {question: "Що змушує сміятися найбільше?", answer: {answer: "", answer_question: ""},},
         8: {question: "Що ви думаєте про ?", answer: {answer: "", answer_question: ""},},
-        9: {question: "Що б ви хотіли робити: мити посуд, стригти газон, прибирати ванну, або пропилососити будинок?", answer: {answer: "", answer_question: ""},},
+        9: {
+            question: "Що б ви хотіли робити: мити посуд, стригти газон, прибирати ванну, або пропилососити будинок?",
+            answer: {answer: "", answer_question: ""},
+        },
         10: {question: "Що б ви зробили якби виграли в лотерею?", answer: {answer: "", answer_question: ""},},
         11: {question: "У що ти грав сьогодні зі своїми друзями?\n", answer: {answer: "", answer_question: ""},},
         12: {question: "Що здивувало тебе сьогодні?", answer: {answer: "", answer_question: ""},},
@@ -98,11 +101,17 @@ let data_common_question = {
         3: {question: "На який останній фільм ви ходили?", answer: {answer: "", answer_question: ""},},
         4: {question: "Яка ваша улюблена гра або спорт?", answer: {answer: "", answer_question: ""},},
         5: {question: "Яку пісню ви б співали в караоке всю ніч?", answer: {answer: "", answer_question: ""},},
-        6: {question: "Які дві радіостанції ти слухаєш в машині найчастіше?", answer: {answer: "", answer_question: ""},},
+        6: {
+            question: "Які дві радіостанції ти слухаєш в машині найчастіше?",
+            answer: {answer: "", answer_question: ""},
+        },
         7: {question: "Які ваші захоплення?", answer: {answer: "", answer_question: ""},},
         8: {question: "Який найкращий подарунок ви отримували?", answer: {answer: "", answer_question: ""},},
         9: {question: "Який найгірший подарунок ви отримували?", answer: {answer: "", answer_question: ""},},
-        10: {question: "Який вид громадського транспорту ви віддаєте перевагу?", answer: {answer: "", answer_question: ""},},
+        10: {
+            question: "Який вид громадського транспорту ви віддаєте перевагу?",
+            answer: {answer: "", answer_question: ""},
+        },
         11: {question: "Яка ваше улюблене домашня тварина?", answer: {answer: "", answer_question: ""},},
         12: {question: "Яку річ ви б ніколи не зробили знову?", answer: {answer: "", answer_question: ""},},
         13: {question: "З якою твариною ви себе асоціюєте?", answer: {answer: "", answer_question: ""},},
@@ -144,17 +153,43 @@ let data_common_question = {
         14: {question: "чи робив ти", answer: {answer: "", answer_question: ""},},
     },
     if: {
-        0: {question: "якби ви могли жити в будь-якому місці, де б це було?", answer: {answer: "", answer_question: ""},},
-        1: {question: "Якби ви могли вибрати робити що завгодно протягом дня, то що б це було?", answer: {answer: "", answer_question: ""},},
-        2: {question: "Ви б віддали перевагу: їздити на велосипеді, кататися на коні, водити машину?", answer: {answer: "", answer_question: ""},},
+        0: {
+            question: "якби ви могли жити в будь-якому місці, де б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        1: {
+            question: "Якби ви могли вибрати робити що завгодно протягом дня, то що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        2: {
+            question: "Ви б віддали перевагу: їздити на велосипеді, кататися на коні, водити машину?",
+            answer: {answer: "", answer_question: ""},
+        },
         3: {question: "Якби ви могли найняти помічника, то для чого? ", answer: {answer: "", answer_question: ""},},
-        4: {question: "Якби ви могли є тільки одне блюдо все ваше життя, що б це було?", answer: {answer: "", answer_question: ""},},
-        5: {question: "Якби ви могли повернутися в минуле, в який рік ви б відправилися?", answer: {answer: "", answer_question: ""},},
+        4: {
+            question: "Якби ви могли є тільки одне блюдо все ваше життя, що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        5: {
+            question: "Якби ви могли повернутися в минуле, в який рік ви б відправилися?",
+            answer: {answer: "", answer_question: ""},
+        },
         6: {question: "Як би ваші друзі охарактеризували вас?", answer: {answer: "", answer_question: ""},},
-        7: {question: "Якби ви могли повернутися в минуле, щоб змінити одну річ, що б це було?", answer: {answer: "", answer_question: ""},},
+        7: {
+            question: "Якби ви могли повернутися в минуле, щоб змінити одну річ, що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
         8: {question: "Якби ти був супергероєм, яку силу ти б мав?", answer: {answer: "", answer_question: ""},},
-        9: {question: "Якби ти міг поїхати куди завгодно, куди б ти поїхав", answer: {answer: "", answer_question: ""},},
+        9: {
+            question: "Якби ти міг поїхати куди завгодно, куди б ти поїхав",
+            answer: {answer: "", answer_question: ""},
+        },
         10: {question: "куди б ти поїхав", answer: {answer: "", answer_question: ""},},
-        11: {question: "Якби у тебе було достатньо грошей, щоб не працювати, ти б працював чи ні", answer: {answer: "", answer_question: ""},},
+        11: {
+            question: "Якби у тебе було достатньо грошей, щоб не працювати, ти б працював чи ні",
+            answer: {answer: "", answer_question: ""},
+        },
     }
 }
+// export default {data_common_question}
+
