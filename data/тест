@@ -50,3 +50,64 @@
 - мабудь я би
 - мабудь я б
 
+function findTheMostSimilarMessage(msg) {
+    let msg_arr = msg.toLowerCase().split(" ")
+    let similarMessage = []
+    //messages.length-1 аби без останнього повідомлення
+    for (let i = 0; i < messages.length - 1; i++) {
+        if (messages[i].sender === "person") {
+            let count = 0;
+            let userMessage = messages[i].message.toLowerCase().split(" ")
+            for (let i = 0; i < msg_arr.length; i++) {
+                for (let j = 0; j < userMessage.length; j++) {
+                    if (msg_arr[i] === userMessage[j])
+                        count++
+                }
+            }
+            let newMsg = {message: messages[i].message, count: count}
+            if (similarMessage.length > 0) {
+                if (similarMessage[0].count < count) {
+                    while (similarMessage.length !== 0)
+                        similarMessage.pop()
+                    similarMessage.push(newMsg)
+                } else if (similarMessage[0].count == count) {
+                    similarMessage.push(newMsg)
+                }
+            } else {
+                similarMessage.push(newMsg)
+            }
+        }
+    }
+    return similarMessage
+}
+
+
+function isQuestionRepeat(msg) {
+// перевірка на кількість слів  + алгоритмджароля +винверля
+    let different = false
+    console.log(findTheMostSimilarMessage(msg))
+    let sameWords = findTheMostSimilarMessage(msg)
+    console.log("sameWords = " + sameWords)
+
+    /**
+     * @param c — количество совпадающих символов.
+     * @param a — количество символов в первой строке,
+     * @param b — количество символов во второй строке
+     * @returns {number}
+     */
+    function coeffJacquard(c, a, b) {
+        return c / (a + b - c)
+    }
+
+    if (sameWords.length > 0) {
+        let c = sameWords[0].count
+        let a = sameWords[0].message.split(" ").length
+        let b = msg.split(" ")
+        let s = sameWords[0].message
+        console.log("same words = " + c)
+        if ((algorithmJaroWinkler(msg, s) > 0.9 || coeffJacquard(c, a, b) > 0.9) && c > 3) {
+            different = true
+        }
+    }
+    return different
+}

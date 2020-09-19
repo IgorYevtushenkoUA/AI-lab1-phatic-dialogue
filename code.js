@@ -1,4 +1,4 @@
-let data_agree_words = ["так", "да", "звичайно", "звісно", "авжеж", "однозначно", "безумовно", "безсумнівно", "дійсно", "позитивно", "рішучо"]
+let data_agree_words = ["так", "да", "звичайно", "звісно", "авжеж", "однозначно", "безумовно", "безсумнівно", "дійсно", "позитивно", "рішучо", "та"]
 let data_disagree_words = ["ні", "нет", "не", "нє"]
 let data_pronoun = [
     {pronoun: "я", changedPronoun: "ти"},
@@ -35,21 +35,19 @@ let data_pronoun = [
     {pronoun: "сам", changedPronoun: "сам"},
     {pronoun: "ніхто", changedPronoun: "ніхто"},
 ]
-let data_question = [
+let data_question_words = [
     "як", "скільки",                                //how
     "ким", "хто", "яким", "хтось"                    // who
-    , "що", "чим", "чого"                            // what
+    , "що", "чим"                            // what
     , "коли", "котрій"                              // when
     , "де", "куди"                                  // where
     , "яка", "яке", "які", "котрий", "який", "якою"  // which
-    , "кого", "кому"                                // whom
-    , "чий"                                         // whom
-    , "чому"                                        // why
+    , "кого", "кому", "чий"                          // whom
+    , "чому", "чого"                                   // why
     , "чи"                                          // or
     , "якби", "якщо", "б", "би"                       // if
 
 ]
-
 // коли повторилося питання користувача
 let data_repeat_phases = [
     "А нащо ти знову мене це питаєш ?",
@@ -64,32 +62,14 @@ let data_repeat_phases = [
     "Навіщо перепитуєш ?",
     "Ти щось схоже вже питав"
 ]
-let data_hello = ["Привіт","Хай","Здрастуй","Привіт, радий буду поспілкуватися"]
+let data_hello = ["Привіт", "Хай", "Здрастуй", "Привіт, радий буду поспілкуватися"]
 let data_goodbye = [
-    'Приємно було з тобою поговорити',    'Приємно було з тобою поспілкуватися',
-    'Приємно було поспілкуватися з тобою',    'Відмінно поговорили',
-    'До зустрічі',    'Дякую за приємне спілкування, до зустрічі',
-    'Дякую за чудове спілкування, бувай',    'Бувай', 'Пока' ,"Чао))"
+    'Приємно було з тобою поговорити', 'Приємно було з тобою поспілкуватися',
+    'Приємно було поспілкуватися з тобою', 'Відмінно поговорили',
+    'До зустрічі', 'Дякую за приємне спілкування, до зустрічі',
+    'Дякую за чудове спілкування, бувай', 'Бувай', 'Пока', "Чао))"
 ]
 
-let data_usual_answer = [
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-    {answer: "", count: 0},
-]
 let data_common_answers = [
     'Я не дуже тебе розумію',
     'це якладне для ене питання',
@@ -109,6 +89,135 @@ let data_common_answers = [
     'Я не допускаю навіть і думки про це.',
     'Мені здається це можливо.'
 ]
+
+let data_common_question = {
+    how: [
+        {question: "як часто ви купуєте одяг", answer: {answer: "Час від часу, змушений це робити", answer_question: "Не так часто як хотілось би. А ви ?"},},
+        {question: "скільки мов ви знаєте", answer: {answer: "Три: українську, польську та французьку", answer_question: "Я не поліглот, тому бідно розмовляю англійською. А як у вас із мовами ?"},},
+        {question: "скільки у тебе було близьких друзів", answer: {answer: "Двоє: Андрій та Максим, а знайомих із якими підтримую знайомства багато", answer_question: "Лише одного друга дитинства. А де ти познайомився із своїм найкращим другом?"},},
+        {question: "скільки ти хочеш мати дітей", answer: {answer: "Не думав про це ще", answer_question: "Я ще молодий аби про таке думати. А ти ?"},},
+        {question: "скільки пар взуття у тебе", answer: {answer: "Ніколи не рахував їх, тому не знаю", answer_question: "Ніколи не рахував. А навіщо питаєте ?"},},
+        {question: "скільки у тебе", answer: {answer: "Достатньо", answer_question: "Важко сказати. А у тебе ?"},},
+    ],
+    who: [
+        {question: "хто твій герой", answer: {answer: "Бетмен, обожнюю його", answer_question: "Немає одного улюбленого, захоплююся всіма. А в тебе ?"},},
+        {question: "ким ти хотів бути, коли був маленькими", answer: {answer: "Це прозвучить смішно, але після перегляду фільма Таксі, то хотів бути таксистом", answer_question: "Як і тато - економістом. А ти ?"},},
+        {question: "ким хоче стати ваша дитина, коли він виросте", answer: {answer: "Програмістом", answer_question: "У мене немає дітай. А ваша ?"},},
+        {question: "хто ваш улюблений автор", answer: {answer: "Немає улюбленого, обожнюю всіх", answer_question: "Жюль Верн. А ви ким захоплюєтеся ?"},},
+        {question: "хто знає тебе краще за всіх", answer: {answer: "Сестра", answer_question: "Сестра. А тебе ?"},},
+        {question: "хто найрозумніша людина, якого ти знаєш", answer: {answer: "Мій дід", answer_question: "Мій дід Віктор. а ти ким захоплюєшся ?"},},
+        {question: "хто був із тобою", answer: {answer: "Не пам'ятаю", answer_question: "Важко згадати. А чого питаєш ?"},},
+        {question: "з чим ти був сьогодні", answer: {answer: "Не пам'ятаю", answer_question: "Важко згадати. А чого питаєш ?"},},
+        {question: "хтось зробив щось хороше для тебе", answer: {answer: "Так. Таких було багато", answer_question: "Так. Таких було багато. А що найнезабутніше тобі робили знайомі?"},},
+    ],
+    what: [
+        {question: "чого ти найбільше боїшся", answer: {answer: "А це нехай буде моїм невеличким секретом", answer_question: "Нічого. А ти ?"},},
+        {question: "що б ви хотіли змінити в собі, якби ти міг", answer: {answer: "Свою поведінку із страрими знайомими", answer_question: "Напевно нічого, не знаю що б змінив би. А ти про це думав ?"},},
+        {question: "що дійсно тебе злить", answer: {answer: "Нічого.", answer_question: "Мої невдачі. А тебе ?"},},
+        {question: "що мотивує вас ретельно працювати", answer: {answer: "Перспективи майбутнього", answer_question: "Мій крудит за навчання... ахаха, а що стосовно тебе ?"},},
+        {question: "що вам найбільше подобається у вашій роботі", answer: {answer: "Вирішувати невирішуване", answer_question: "Спілкування із людьми. А тобі ?"},},
+        {question: "чим ти найбільше незадоволений у своїй роботі", answer: {answer: "Дедлайнами та проектами, що надвисли наді мною", answer_question: "Насправді всім задоволений. А тебе щось незадовольняє ?"},},
+        {question: "що є найбільшим досягненням для вашої дитини", answer: {answer: "У мене немає дітей", answer_question: "У мене немає дітей. А в тебе вже є ?"},},
+        {question: "що змушує сміятися найбільше", answer: {answer: "Стендап", answer_question: "Степдап. Ти колись його дивився ?"},},
+        {question: "що ви думаєте про", answer: {answer: "Це дуже цікаво, але скажу наступного разу", answer_question: "скажу наступного разу, Тільки не ображайся. Окей?"},},
+        {question: "що б ви зробили якби виграли в лотерею", answer: {answer: "Мандрував би все життя", answer_question: "Ахах, як тільки так відразу. а ти вже думав про це ?"},},
+        {question: "у що ти грав сьогодні зі своїми друзями", answer: {answer: "Як із завжди. ми не зраджуємо традиціям", answer_question: "Ні,  не встигли. А чому питаєш ?"},},
+        {question: "що здивувало тебе сьогодні", answer: {answer: "Все як завжди", answer_question: "Нічого невого. а чому цікавишся?"},},
+    ],
+    when: [
+        {question: "коли ти працював", answer: {answer: "не пам'ятаю точно, але це було нещодавно", answer_question: "Буквально декілька днів тому. А чому саме це тебе цікавить ?"},},
+        {question: "коли ти відпочивав востаннє", answer: {answer: "Вчора", answer_question: "Позавчора. А ти ?"},},
+        {question: "коли це сталося ти не пам'ятаєш", answer: {answer: "Не дуже цітко пам'ятаю", answer_question: "Забув. А ти не пам'ятаєш?"},},
+    ],
+    where: [
+        {question: "де ви бачите себе через п'ять років?", answer: {answer: "У новій іт-компанії", answer_question: "У новій іт-компанії. А ти ?"},},
+        {question: "де ти бачиш себе через 10 років?", answer: {answer: "У новій іт-компанії", answer_question: "У новій іт-компанії. А ти ?"},},
+        {question: "де ти відпочивав", answer: {answer: "Скрізь де тільки міг", answer_question: "З голови вилетіло. А ти де ?"},},
+        {question: "куди ти їздив", answer: {answer: "Відпочивати", answer_question: "Відпочивати. А ти ?"},},
+        {question: "куди ти літав", answer: {answer: "Відпочивати", answer_question: "Відпочивати. А ти ?"},},
+    ],
+    which: [
+        {question: "який твій улюблений сімейний відпочинок", answer: {answer: "Коли вся сім'я поруч", answer_question: "Спорт. А твій"},},
+        {question: "яка твоя улюблена книга", answer: {answer: "Замок Броуді. Рекомендую", answer_question: "Замок Броуді. Ти читав її ?"},},
+        {question: "на який останній фільм ти ходив", answer: {answer: "Шалене весілля", answer_question: "Шалене весілля. А ти ?"},},
+        {question: "яка твоя улюблена гра", answer: {answer: "Футбол", answer_question: "Волейбол. А твоя?"},},
+        {question: "які ваші захоплення", answer: {answer: "Малюання", answer_question: "Малювання. а твоє?"},},
+        {question: "яка ваше улюблена домашня тварина", answer: {answer: "Пес", answer_question: "Пес. А твоя?"},},
+        {question: "яку річ ви б ніколи не зробили знову", answer: {answer: "Минулих помилок", answer_question: "Минулих помилок. А ти ?"},},
+        {question: "якие ваш улюблений сімейне свято, традиції?", answer: {answer: "Новий Рік", answer_question: "Новий Рік. А твоє ?"},},
+        {question: "якою була твоя перша робота?", answer: {answer: "Репетитором математики підробляв", answer_question: "Репетитором математики підроблявю А ти ким був ?"},},
+        {question: "яке заняття робить тебе щасливим", answer: {answer: "Спорт мене заряджає", answer_question: "Спорт мене заряджає. А тебе?"},},
+        {question: "яке свято ти любиш найбільше", answer: {answer: "Новий Рік", answer_question: "Новий Рікю А ти ?"},},
+        {question: "яке у вас улюблене заняття", answer: {answer: "Однозначно програмування", answer_question: "Немає. А в тебе?"},},
+        {question: "який ти любиш шоколад", answer: {answer: "Я не люблю його", answer_question: "Всякий. а ти ?"},},
+        {question: "в якому місті хотілося б жити", answer: {answer: "У Лондоні", answer_question: "У Лондоні. А ти"},},
+        {question: "в якій країні хотів би", answer: {answer: "В Англії", answer_question: "В Англії. А ти ?"},},
+        {question: "яка в тебе улюблена гра", answer: {answer: "Футбол", answer_question: "Футбол. А твоя ?"},},
+        {question: "які книги любиш", answer: {answer: "Всі, що потрапляють під руку", answer_question: "Всі, що потрапляють під руку. А ти ?"},},
+    ],
+    whom: [
+        {question: "Кого б ви відправили на безлюдний острів?", answer: {answer: "Своїх ворогів. Ахахха", answer_question: "Ніколи про це не думав. А ти б кого ?"},},
+    ],
+    why: [
+        {question: "чому ти вічно все", answer: {answer: "Не знаю, не думав проце", answer_question: "Хммм...Навіть не знаю. А як ти думаєш ?"},},
+        {question: "чому так часто пропадаєш", answer: {answer: "Ахахахха, ось і пасхалка від ЧБД", answer_question: "Ти знову передивився ЧБД ?"},},
+    ],
+    or: [
+        {question: "Чи допоміг ти комусь?", answer: {answer: "Так", answer_question: "Так. А ти ?"},},
+        {question: "Чи любите ви", answer: {answer: "Звичайно", answer_question: "Ні.. А ти?"},},
+        {question: "чи любиш ти", answer: {answer: "Звичайно", answer_question: "Ні.. А ти?"},},
+        {question: "чи був ти", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи були ви", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи знаєте ви", answer: {answer: "Ні", answer_question: "Так. а ти ?"},},
+        {question: "чи знаєш ти", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи працюєш ти", answer: {answer: "Так", answer_question: "Зараз ні. А ти ?"},},
+        {question: "чи працюєте ви", answer: {answer: "Ні", answer_question: "Зараз так, а ти?"},},
+        {question: "чи бачили ви", answer: {answer: "Звичайно", answer_question: "На жаль ні. А ти 7"},},
+        {question: "чи бачив ти", answer: {answer: "На жаль ні", answer_question: "На жаль так. А ти ?"},},
+        {question: "чи їздив ти в", answer: {answer: "Так таке було", answer_question: "Ні. А ти ?"},},
+        {question: "чи їздили ви в", answer: {answer: "Так таке було", answer_question: "Ні. а ти?"},},
+        {question: "чи часто ти робив", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи робив ти", answer: {answer: "Ні", answer_question: "Так. Так і ще раз Так. А ти ?"},},
+    ],
+    if: [
+        {
+            question: "якби ви могли жити в будь-якому місці, де б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {
+            question: "Якби ви могли вибрати робити що завгодно протягом дня, то що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {
+            question: "Ви б віддали перевагу: їздити на велосипеді, кататися на коні, водити машину?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {question: "Якби ви могли найняти помічника, то для чого? ", answer: {answer: "", answer_question: ""},},
+        {
+            question: "Якби ви могли є тільки одне блюдо все ваше життя, що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {
+            question: "Якби ви могли повернутися в минуле, в який рік ви б відправилися?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {question: "Як би ваші друзі охарактеризували вас?", answer: {answer: "", answer_question: ""},},
+        {
+            question: "Якби ви могли повернутися в минуле, щоб змінити одну річ, що б це було?",
+            answer: {answer: "", answer_question: ""},
+        },
+        {question: "Якби ти був супергероєм, яку силу ти б мав?", answer: {answer: "", answer_question: ""},},
+        {
+            question: "Якби ти міг поїхати куди завгодно, куди б ти поїхав",
+            answer: {answer: "", answer_question: ""},
+        },
+        {question: "куди б ти поїхав", answer: {answer: "", answer_question: ""},},
+        {
+            question: "Якби у тебе було достатньо грошей, щоб не працювати, ти б працював чи ні",
+            answer: {answer: "", answer_question: ""},
+        }
+    ]
+}
 
 let messages = [
     {
@@ -184,7 +293,7 @@ function modifyMessage(msg) {
     return msgCopy
 }
 
-const sendMessage = () => {
+function sendMessage() {
     let message = document.getElementById("message").value
     if (message !== "") {
         message = modifyMessage(message)
@@ -216,8 +325,8 @@ function isQuestion(msg) {
  * @returns {boolean}
  */
 function isQuestionWord(word) {
-    for (let q of data_question)
-        if (word === data_question)
+    for (let qw of data_question_words)
+        if (qw === word)
             return true
     return false
 }
@@ -540,20 +649,15 @@ function changeQuestionToAnswer(msg) {
     for (let w of msg_arr) {
         if (isPronoun(w)) {
             msg_changed.push(changePronoun(w))
-            debugger
         } else if (isVerb(w)) {
             let time = getVerbTime(w)
             msg_changed.push(changeVerb(w, time))
-            debugger
         } else {
             msg_changed.push(w)
-            debugger
         }
     }
     return msg_changed
 }
-
-console.log("є".charCodeAt(0))
 
 /**
  * QW- question word , Pr-pronoun , \\- another sentence
@@ -606,145 +710,9 @@ function getSentenceStructure(msg, qw = "") {
     return sentenceStructure
 }
 
-console.log(getSentenceStructure("приацюєш ти"))
-
 function generateAnswerToRepeatQuestion() {
     let randomAnswer = Math.floor(Math.random() * data_repeat_phases.length)
     return data_repeat_phases[randomAnswer]
-}
-
-function answerQuestion(msg) {
-    console.log("isQuestion(msg)")
-    if (isQuestionRepeat(msg)) {
-        // code tha say that questions repeat
-        alert("ти вже це казав")
-        console.log("ти вже це казав")
-        return generateAnswerToRepeatQuestion()
-    } else {
-        //delete -- ?
-        msg = msg.slice(0, msg.length)
-        msg = getQuestion(msg)
-
-        let questionWord = findQuestionWord(msg)
-        let question_arr = changeQuestionToAnswer(msg)
-        console.log(question_arr)
-        debugger
-        let sentenceStructure = getSentenceStructure(msg, questionWord)
-        if (questionWord === "") {
-            //     [ 'Pr', '//' ]
-            let text_after_pronoun = []
-            let pronoun = []
-            let answer = []
-            if (arrayEquals(sentenceStructure, ["Pr", "//"])) {
-                for (let w of question_arr) {
-                    if (pronoun.length > 0) {
-                        text_after_pronoun.push(w)
-                    } else if (pronoun.length === 0 && isPronoun(w)) {
-                        pronoun.push(w)
-                    }
-                }
-            }
-            answer = pronoun.concat(["|"].concat(text_after_pronoun))
-            return answer.join(" ");
-        } else {
-            //     [ 'QW', '//', 'Pr', '//' ]
-            //     [ 'QW', '//', 'Pr' ]
-            //     [ 'QW', '//' ]
-            //     [ 'QW', 'Pr', '//' ]
-            //     [ 'QW', 'Pr' ]
-            let text_before_pronoun = []
-            let text_after_pronoun = []
-            let text_after_question = []
-            let pronoun = []
-            let question = []
-            let nothing = []
-            let answer = []
-            debugger
-            if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr', '//'])) {
-                debugger
-                for (let w of question_arr) {
-                    if (question.length > 0) {
-                        if (w == questionWord && isQuestionWord(w))
-                            question.push(w)
-                        else if (isPronoun(w) && pronoun.length == 0)
-                            pronoun.push(w)
-                        else {
-                            if (pronoun.length === 0)
-                                text_before_pronoun.push(w)
-                            else text_after_pronoun.push(w)
-                        }
-                    } else if (w === questionWord && isQuestionWord(w))
-                        question.push(w)
-                }
-                // answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
-                answer = pronoun.concat(["|"].concat(text_before_pronoun.concat(["|"].concat(text_after_pronoun))))
-
-            } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
-                debugger
-                for (let w of question_arr) {
-                    if (question.length > 0) {
-                        if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                        else if (isPronoun(w) && pronoun.length == 0)
-                            pronoun.push(w)
-                        else if (pronoun.length == 0)
-                            text_before_pronoun.push(w)
-                    } else if (w === questionWord && isQuestionWord(w))
-                        question.push(w)
-                }
-                // answer = pronoun + "|" + text_before_pronoun
-                answer = pronoun.concat(["|"].concat(text_before_pronoun))
-
-            } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
-                debugger
-                for (let w of question_arr) {
-                    if (question.length > 0) {
-                        if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                        else if (question.length > 0)
-                            text_after_question.push(w)
-                    } else if (w === questionWord && isQuestionWord(w))
-                        question.push(w)
-                }
-                // answer = text_after_question + "|"
-                answer = text_after_question.concat(["|"])
-
-            } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
-                debugger
-                for (let w of question_arr) {
-                    if (question.length > 0) {
-                        if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                        else if (isPronoun(w) && pronoun.length == 0)
-                            pronoun.push(w)
-                        else if (pronoun.length > 0)
-                            text_after_pronoun.push(w)
-                    } else if (w === questionWord && isQuestionWord(w))
-                        question.push(w)
-                }
-                debugger
-                answer = pronoun.concat(["|"].concat(text_after_pronoun))
-            } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
-                debugger
-                for (let w of question_arr) {
-                    if (question.length > 0) {
-                        if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                        else if (isPronoun(w) && pronoun.length == 0)
-                            pronoun.push(w)
-                    } else if (w === questionWord && isQuestionWord(w))
-                        question.push(w)
-                }
-                answer = pronoun
-            } else {
-                answer = []
-            }
-            // todo тре подумать
-            alert(answer)
-            return answer.join(" ")
-        }
-    }
-
 }
 
 //todo може бути і таке що користувач надіслав декілька коротких відповідей
@@ -815,6 +783,199 @@ function askQuestionByAnswer(msg) {
 
 }
 
+function getEnglishQuestionWord(question_word_ua) {
+    if (question_word_ua === "як" || question_word_ua === "скільки") return "how"
+    if (question_word_ua === "ким" || question_word_ua === "хто" || question_word_ua === "яким" || question_word_ua === "хтось") return 'who'
+    if (question_word_ua === "що" || question_word_ua === "чим") return 'what'
+    if (question_word_ua === "коли" || question_word_ua === "котрій") return 'when'
+    if (question_word_ua === "де" || question_word_ua === "куди") return 'where'
+    if (question_word_ua === "яка" || question_word_ua === "яке" || question_word_ua === "які" || question_word_ua === "котрий" || question_word_ua === "який" || question_word_ua === "якою") return 'which'
+    if (question_word_ua === "кого" || question_word_ua === "кому" || question_word_ua === "чий") return 'whom'
+    if (question_word_ua === "чому" || question_word_ua === "чого") return 'why'
+    if (question_word_ua === "чи") return 'or'
+    if (question_word_ua === "якби" || question_word_ua === "якщо" || question_word_ua === "б" || question_word_ua === "би") return 'if'
+}
+
+//todo перевірити як працює + код повторюється із іншим методом
+function getIDSimilarQuestionExistInDB(msg, eng_qw) {
+
+    let similar_question = [] // {питання}
+    let msg_arr = msg.toLowerCase().split(" ")
+    debugger
+    for (let i = 0; i < data_common_question[eng_qw].length; i++) {
+        let count = 0
+        let question = data_common_question[eng_qw][i].question.split(" ")
+        for (let i = 0; i < msg_arr.length; i++) {
+            for (let j = 0; j < question.length; j++) {
+                if (msg_arr[i] === question[j])
+                    count++
+            }
+        }
+        let similarQuestionID = {questionID: i, count: count}
+
+        if (similar_question.length > 0) {
+            if (similar_question[0].count < count) {
+                while (similar_question.length !== 0)
+                    similar_question.pop()
+            } else if (similar_question[0].count === count)
+                similar_question.push(similarQuestionID)
+        } else similar_question.push(similarQuestionID)
+    }
+    //similar_question[0].questionID - якщо буде декілька речень із однаковою кількістю слів я поки не оброблюю
+    return (similar_question.length > 0) ? similar_question[0].questionID : null
+}
+
+function isQuestionSimilarToQuestionFromDatabase(question, questionWord, questionID) {
+    alert()
+    debugger
+    let questionFromDB = data_common_question[questionWord][questionID].question
+    let different = false
+    if (algorithmJaroWinkler(question, questionFromDB) > 0.85) return true
+    return false
+
+}
+
+function answerQuestion(msg) {
+    if (isQuestionRepeat(msg)) {
+        // code that says that questions repeat
+        return generateAnswerToRepeatQuestion()
+    } else {
+        //delete -- ?
+        msg = msg.slice(0, msg.length)
+        msg = getQuestion(msg)
+
+        let questionWord = findQuestionWord(msg)
+        let eng_qw = getEnglishQuestionWord(questionWord)
+        let questionFromDB_ID = getIDSimilarQuestionExistInDB(msg, eng_qw)
+        if (questionWord !== ""
+            && questionFromDB_ID !== null
+            && isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)) {
+            // знайти відповідь в базі даних та повернути загальну відповідь
+            return "повторилося із бази даних "
+            // return data_common_question[questionWord][questionFromDB_ID].answer.answer
+        } else {
+            debugger
+            let question_arr = changeQuestionToAnswer(msg)
+            console.log(question_arr)
+            debugger
+            let sentenceStructure = getSentenceStructure(msg, questionWord)
+            if (questionWord === "") {
+                //     [ 'Pr', '//' ]
+                let text_after_pronoun = []
+                let pronoun = []
+                let answer = []
+                if (arrayEquals(sentenceStructure, ["Pr", "//"])) {
+                    for (let w of question_arr) {
+                        if (pronoun.length > 0) {
+                            text_after_pronoun.push(w)
+                        } else if (pronoun.length === 0 && isPronoun(w)) {
+                            pronoun.push(w)
+                        }
+                    }
+                }
+                answer = pronoun.concat(["|"].concat(text_after_pronoun))
+                return answer.join(" ");
+            } else {
+                //     [ 'QW', '//', 'Pr', '//' ]
+                //     [ 'QW', '//', 'Pr' ]
+                //     [ 'QW', '//' ]
+                //     [ 'QW', 'Pr', '//' ]
+                //     [ 'QW', 'Pr' ]
+                let text_before_pronoun = []
+                let text_after_pronoun = []
+                let text_after_question = []
+                let pronoun = []
+                let question = []
+                let nothing = []
+                let answer = []
+                debugger
+                if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr', '//'])) {
+                    debugger
+                    for (let w of question_arr) {
+                        if (question.length > 0) {
+                            if (w == questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push(w)
+                            else {
+                                if (pronoun.length === 0)
+                                    text_before_pronoun.push(w)
+                                else text_after_pronoun.push(w)
+                            }
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    // answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
+                    answer = pronoun.concat(["|"].concat(text_before_pronoun.concat(["|"].concat(text_after_pronoun))))
+
+                } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
+                    debugger
+                    for (let w of question_arr) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push(w)
+                            else if (pronoun.length == 0)
+                                text_before_pronoun.push(w)
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    // answer = pronoun + "|" + text_before_pronoun
+                    answer = pronoun.concat(["|"].concat(text_before_pronoun))
+
+                } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
+                    debugger
+                    for (let w of question_arr) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (question.length > 0)
+                                text_after_question.push(w)
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    // answer = text_after_question + "|"
+                    answer = text_after_question.concat(["|"])
+
+                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
+                    debugger
+                    for (let w of question_arr) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push(w)
+                            else if (pronoun.length > 0)
+                                text_after_pronoun.push(w)
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    debugger
+                    answer = pronoun.concat(["|"].concat(text_after_pronoun))
+                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
+                    debugger
+                    for (let w of question_arr) {
+                        if (question.length > 0) {
+                            if (w === questionWord && isQuestionWord(w))
+                                question.push(w)
+                            else if (isPronoun(w) && pronoun.length == 0)
+                                pronoun.push(w)
+                        } else if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                    }
+                    answer = pronoun
+                } else {
+                    answer = []
+                }
+                // todo тре подумать
+                alert(answer)
+                return answer.join(" ")
+            }
+        }
+    }
+}
+
 function createQuestion(msg) {
     if (countQuestions(msg) >= 1) {
         let lastQuestion = getQuestion(msg)
@@ -845,6 +1006,19 @@ function generateBotAnswer(msg) {
 }
 
 function test() {
+    let data = {
+        how: [
+            {question: "Як часто ви купуєте одяг?", answer: {answer: "1", answer_question: ""},},
+            {question: "Скільки мов ви знаєте?", answer: {answer: "", answer_question: ""},},
+            {question: "скільки у тебе було близьких друзів", answer: {answer: "", answer_question: ""},},
+            {question: "скільки ти хочеш мати дітей", answer: {answer: "", answer_question: ""},},
+            {question: "Скільки пар взуття у вас?", answer: {answer: "", answer_question: ""},},
+            {question: "скільки у тебе", answer: {answer: "3", answer_question: ""},},
+        ]
+    }
+    for (let i = 0; i < data.how.length; i++) {
+        console.log(data['how'][i].answer.answer)
+    }
 
 }
 
