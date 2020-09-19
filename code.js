@@ -1,3 +1,6 @@
+let data_agree_words = ["так", "да", "звичайно", "звісно", "авжеж", "однозначно", "безумовно", "безсумнівно", "дійсно", "позитивно", "рішучо"]
+let data_disagree_words = ["ні", "нет", "не", "нє"]
+
 let messages = [
     {
         sender: "person",
@@ -109,7 +112,7 @@ function isQuestionWord(word) {
         || word === "де" || word === "куди"
         || word === "яка" || word === "яке" || word === "які" || word === "котрий"
         || word === "кого" || word === "кому"
-        || word === "чий"
+        || word === "чий" || word === "чим"
         || word === "чому"
         || word === "чи"
         || word === "якби" || word === "якщо")
@@ -341,7 +344,7 @@ function isQuestionRepeat(msg) {
     return different
 }
 
-function countQuestionsInMessage(msg) {
+function countQuestions(msg) {
     let count = 0
     for (let i = 0; i < msg.length; i++)
         if (msg.charAt(i) === "?")
@@ -351,10 +354,20 @@ function countQuestionsInMessage(msg) {
 
 //todo improve
 function getQuestion(msg) {
-    if (countQuestionsInMessage(msg) === 1) return msg
-    else {
-        // todo дописати якщо в повідомленні більше ніж 1 питання
+    // if (countQuestions(msg) === 1) return msg
+    // else {
+    //     // todo дописати якщо в повідомленні більше ніж 1 питання
+    //     return msg
+    // }
+
+    let msg_arr = msg.split("?")
+    msg_arr.pop()
+    if (msg_arr.length === 1) {
         return msg
+    } else {
+        // відповісти на останнє питання
+        alert(msg_arr[msg_arr.length - 1] + "?")
+        return msg_arr[msg_arr.length - 1] + "?"
     }
 }
 
@@ -458,6 +471,10 @@ function changePronoun(pronoun) {
             return "мені"
         case "тобою" :
             return "мною"
+        case "твої" :
+            return "мої"
+        case "мої" :
+            return "твої"
         case "ми" :
             return "ми"
         case "ви" :
@@ -521,7 +538,7 @@ function isVerb(word) {
         return true
 }
 
-function getVerbTime(v) {
+function getVerbTime(word) {
     // past - present - future
     switch (word.slice(word.length - 2, word.length)) {
         case "еш" :
@@ -621,120 +638,207 @@ function getSentenceStructure(msg, qw = "") {
     return sentenceStructure
 }
 
+function answerQuestion(msg) {
+    console.log("isQuestion(msg)")
+    if (isQuestionRepeat(msg)) {
+        // code tha say that questions repeat
+        alert("ти вже це казав")
+        console.log("ти вже це казав")
+    } else {
+        //delete -- ?
+        msg = msg.slice(0, msg.length)
+        msg = getQuestion(msg)
+
+        let questionWord = findQuestionWord(msg)
+        let question_arr = changeQuestionToAnswer(msg)
+
+        let sentenceStructure = getSentenceStructure(msg, questionWord)
+        //     [ 'QW', '//', 'Pr', '//' ]
+        //     [ 'QW', '//', 'Pr' ]
+        //     [ 'QW', '//' ]
+        //     [ 'QW', 'Pr', '//' ]
+        //     [ 'QW', 'Pr' ]
+        //     [ 'Pr', '//' ]
+        if (questionWord === "") {
+
+        } else {
+            let text_before_pronoun = []
+            let text_after_pronoun = []
+            let text_after_question = []
+            let pronoun = []
+            let question = []
+            let nothing = []
+            let answer = []
+            debugger
+            if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr', '//'])) {
+                debugger
+                for (let w of question_arr) {
+                    if (question.length > 0) {
+                        if (w == questionWord && isQuestionWord(w))
+                            question.push(w)
+                        else if (isPronoun(w) && pronoun.length == 0)
+                            pronoun.push(w)
+                        else {
+                            if (pronoun.length === 0)
+                                text_before_pronoun.push(w)
+                            else text_after_pronoun.push(w)
+                        }
+                    } else if (w === questionWord && isQuestionWord(w))
+                        question.push(w)
+                }
+                answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
+            } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
+                debugger
+                for (let w of question_arr) {
+                    if (question.length > 0) {
+                        if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                        else if (isPronoun(w) && pronoun.length == 0)
+                            pronoun.push(w)
+                        else if (pronoun.length == 0)
+                            text_before_pronoun.push(w)
+                    } else if (w === questionWord && isQuestionWord(w))
+                        question.push(w)
+                }
+                answer = pronoun + "|" + text_before_pronoun
+            } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
+                debugger
+                for (let w of question_arr) {
+                    if (question.length > 0) {
+                        if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                        else if (question.length > 0)
+                            text_after_question.push(w)
+                    } else if (w === questionWord && isQuestionWord(w))
+                        question.push(w)
+                }
+                answer = text_after_question + "|"
+
+            } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
+                debugger
+                for (let w of question_arr) {
+                    if (question.length > 0) {
+                        if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                        else if (isPronoun(w) && pronoun.length == 0)
+                            pronoun.push(w)
+                        else if (pronoun.length > 0)
+                            text_after_pronoun.push(w)
+                    } else if (w === questionWord && isQuestionWord(w))
+                        question.push(w)
+                }
+                debugger
+                answer = pronoun + "|" + text_after_pronoun
+            } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
+                debugger
+                for (let w of question_arr) {
+                    if (question.length > 0) {
+                        if (w === questionWord && isQuestionWord(w))
+                            question.push(w)
+                        else if (isPronoun(w) && pronoun.length == 0)
+                            pronoun.push(w)
+                    } else if (w === questionWord && isQuestionWord(w))
+                        question.push(w)
+                }
+                answer = pronoun
+            } else {
+                answer = []
+            }
+            // todo тре подумать
+            alert(answer)
+        }
+    }
+
+}
+
+//todo може бути і таке що користувач надіслав декілька коротких відповідей
+function isAnswerOnMyQuestion() {
+    //messages[messages.length-2 , там мінус бо відповідь користувача спочатку додається до списку а потім генерується відповідь бота
+    return messages[messages.length - 2].sender === "bot"
+}
+
+function isAgreeWord(word) {
+    for (let w of data_agree_words) {
+        if (w === word)
+            return true
+    }
+    return false
+}
+
+function isDisAgreeWord(word) {
+    for (let w of data_disagree_words) {
+        if (w === word)
+            return true
+    }
+    return false
+}
+
+function findAgreeWords(msg) {
+    let answer = msg.toLowerCase().split(" ")
+    return answer.filter(word => isAgreeWord(word))
+}
+
+function findDisAgreeWords(msg) {
+    let answer = msg.toLowerCase().split(" ")
+    return answer.filter(word => isDisAgreeWord(word))
+}
+
+/**
+ * переіряє чи це відповідь на ботом поставлене питання є короткою
+ * @param msg
+ * @returns {boolean}
+ */
+function isShortAnswer(msg) {
+    // якщо це відповідь на моє питання
+    // якщо відповідь коротка --- тут неоднозначно
+    // якщо вна місти слова згоди та незгоди
+    // то це коротка відповідь
+    let coeff_short = 5
+    if (isAnswerOnMyQuestion()
+        && msg.split(" ").length <= coeff_short
+        && (findAgreeWords(msg).length > 0 || findDisAgreeWords(msg).length > 0)
+    ) return true
+}
+
+/**
+ * генерує запиання залежно від того яке ключове слово у короткій відповіді
+ * @param msg
+ * @returns {string}
+ */
+// todo Додати можливість запитувати не лише "А чому" а ще інші варіанти
+function askQuestionByAnswer(msg) {
+    let disagree = findDisAgreeWords(msg)
+    if (disagree.length > 0){
+        return "А чому " + disagree[0] + " ?"
+    }
+    let agree = findAgreeWords(msg)
+    if (agree.length > 0) {
+        return "А чому " + agree[0] + " ?"
+    }
+    return "Зрозуміло"
+
+}
+
 // todo дописати
 function generateBotAnswer(msg) {
     // isQuestionRepeat(msg)
     if (isQuestion(msg)) {
-        console.log("isQuestion(msg)")
-        if (isQuestionRepeat(msg)) {
-            // code tha say that questions repeat
-            alert("ти вже це казав")
-            console.log("ти вже це казав")
-        } else {
-            //delete -- ?
-            msg = msg.slice(0, msg.length)
-            msg = getQuestion(msg)
-
-            let questionWord = findQuestionWord(msg)
-            let question_arr = changeQuestionToAnswer(msg)
-
-            let sentenceStructure = getSentenceStructure(msg, questionWord)
-            //     [ 'QW', '//', 'Pr', '//' ]
-            //     [ 'QW', '//', 'Pr' ]
-            //     [ 'QW', '//' ]
-            //     [ 'QW', 'Pr', '//' ]
-            //     [ 'QW', 'Pr' ]
-            //     [ 'Pr', '//' ]
-            if (questionWord === "") {
-                let text_before_pronoun = []
-                let text_after_pronoun = []
-                let text_after_question = []
-                let pronoun = []
-                let question = []
-                let nothing = []
-                if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr', '//'])) {
-                    for (let w of sentenceStructure) {
-                        if (question.length > 0) {
-                            if (w == questionWord && isQuestionWord(w))
-                                question.push(w)
-                            else if (isPronoun(w) && pronoun.length == 0)
-                                pronoun.push(w)
-                            else {
-                                if (pronoun.length === 0)
-                                    text_before_pronoun.push(w)
-                                else text_after_pronoun.push(w)
-                            }
-                        } else if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                    }
-                    let answer = pronoun +"|" + text_before_pronoun +"|" + text_after_pronoun
-                } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
-                    for (let w of sentenceStructure) {
-                        if (question.length > 0) {
-                            if (w === questionWord && isQuestionWord(w))
-                                question.push(w)
-                            else if (isPronoun(w) && pronoun.length == 0)
-                                pronoun.push (w)
-                            else if (pronoun.length == 0)
-                                text_before_pronoun.push(w)
-                        }else if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                    }
-
-                    let answer = pronoun + "|" +text_before_pronoun
-                } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
-                    for (let w of sentenceStructure) {
-                        if (question.length > 0) {
-                            if (w === questionWord && isQuestionWord(w))
-                                question.push(w)
-                            else if (question.length > 0)
-                                text_after_question.push(w)
-                        }else if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                    }
-                    let answer = text_after_question + "|"
-
-                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
-                    for (let w of sentenceStructure) {
-                        if (question.length > 0) {
-                            if (w === questionWord && isQuestionWord(w))
-                                question.push(w)
-                            else if (isPronoun(w) && pronoun.length == 0)
-                                pronoun.push (w)
-                            else if (pronoun.length > 0)
-                                text_after_pronoun.push(w)
-                        }else if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                    }
-                    let answer = pronoun + "|" +text_after_pronoun
-                } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
-
-                    for (let w of sentenceStructure) {
-                        if (question.length > 0) {
-                            if (w === questionWord && isQuestionWord(w))
-                                question.push(w)
-                            else if (isPronoun(w) && pronoun.length == 0)
-                                pronoun.push (w)
-                        }else if (w === questionWord && isQuestionWord(w))
-                            question.push(w)
-                    }
-                    let answer = pronoun
-                } else {
-                    let answer = []
-                }
-
-            } else {
-                if (arrayEquals(sentenceStructure, ['Pr', '//'])) {
-
-                }
-                // todo тре подумать
-            }
-        }
+        answerQuestion(msg)
     } else {
-        if (isShortAnswer(msg)) {
-
+        // if (isAnswerWithQuestion(msg)){}
+        if (countQuestions(msg) >= 1) {
+            let lastQuestion = getQuestion(msg)
+            answerQuestion(lastQuestion)
+            // if (answer_question()) {}
+            // else if (onlyQuestionWithoutAnswer()){}
         } else {
-
+            if (isShortAnswer(msg)) {
+                askQuestionByAnswer(msg)
+                alert("А чого така коротка відповідь ?")
+            } else {
+                // saidThatYouUnderstandAnswer()
+                alert("Я тебе ніби зрзумів але не оч")
+            }
         }
     }
     return "бот хз"
@@ -744,6 +848,5 @@ function test(arr) {
 
 }
 
-console.log("QW // v".match(new RegExp(`^QW //`)))
-
+console.log("привіт як ти? what are you doing ?".split("?"))
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <main>
@@ -10,13 +11,18 @@
         <!--    <div style="overflow-y: scroll; height:400px;">-->
         <!--    </div>-->
         <div>
-            <h3>Messages</h3>
-            <h3>Як ти друже ?</h3>
+            <h3>K.I.R.P.I.C.H</h3>
+            <h3>як ти друже ?</h3>
             <div id="all_messages"></div>
         </div>
-        <div>
-            <input type="text" placeholder="Write a message..." id="message">
-            <button id="btnSend" onclick="sendMessage()"> Send</button>
+        <div style="background-color: antiquewhite">
+            <div class="inline" style="background-color: aqua">
+                <textarea placeholder="Write a message..." id="message"></textarea>
+            </div>
+            <div class="inline" style="background-color:blueviolet">
+                <button id="btnSend" onclick="sendMessage()"> Send</button>
+            </div>
+            <!--            <input type="text" placeholder="Write a message..." id="message">-->
         </div>
     </div>
 </main>
