@@ -1,5 +1,78 @@
 let data_agree_words = ["так", "да", "звичайно", "звісно", "авжеж", "однозначно", "безумовно", "безсумнівно", "дійсно", "позитивно", "рішучо"]
 let data_disagree_words = ["ні", "нет", "не", "нє"]
+let data_pronoun = [
+    {pronoun: "я", changedPronoun: "ти"},
+    {pronoun: "мій", changedPronoun: "твій"},
+    {pronoun: "мене", changedPronoun: "тебе"},
+    {pronoun: "мені", changedPronoun: "тобі"},
+    {pronoun: "мною", changedPronoun: "тобою"},
+    {pronoun: "ти", changedPronoun: "я"},
+    {pronoun: "тебе", changedPronoun: "мене"},
+    {pronoun: "тобі", changedPronoun: "мені"},
+    {pronoun: "тобою", changedPronoun: "мною"},
+    {pronoun: "твої", changedPronoun: "мої"},
+    {pronoun: "мої", changedPronoun: "твої"},
+    {pronoun: "ми", changedPronoun: "ви"},
+    {pronoun: "ви", changedPronoun: "ми"},
+    {pronoun: "вона", changedPronoun: "вона"},
+    {pronoun: "він", changedPronoun: "він"},
+    {pronoun: "воно", changedPronoun: "воно"},
+    {pronoun: "вони", changedPronoun: "вони"},
+    {pronoun: "твій", changedPronoun: "мій"},
+    {pronoun: "наш", changedPronoun: "ваш"},
+    {pronoun: "ваш", changedPronoun: "наш"},
+    {pronoun: "його", changedPronoun: "його"},
+    {pronoun: "її", changedPronoun: "її"},
+    {pronoun: "їх", changedPronoun: "їх"},
+    {pronoun: "їхній", changedPronoun: "їхній"},
+    {pronoun: "той", changedPronoun: "цей"},
+    {pronoun: "кожен", changedPronoun: "кожен"},
+    {pronoun: "хто", changedPronoun: "хто"},
+    {pronoun: "кожний", changedPronoun: "кожний"},
+    {pronoun: "жодний", changedPronoun: "жодний"},
+    {pronoun: "жоден", changedPronoun: "жоден"},
+    {pronoun: "інший", changedPronoun: "інший"},
+    {pronoun: "сам", changedPronoun: "сам"},
+    {pronoun: "ніхто", changedPronoun: "ніхто"},
+]
+// коли повторилося питання користувача
+let data_repeat_phases = [
+    "А нащо ти знову мене це питаєш ?",
+    "Ти хіба це вже не питав ?",
+    "Здається я вже тобі на це відповідав",
+    "Емммм... А ти хіба це не казав ?",
+    "Мені здалося, чи ти повторив питання ?",
+    "Щось ти почав повторюватися",
+    "Запитай краще про щось інше",
+    "Давай змінимо тему",
+    "Десь я вже це питання зустрічав",
+    "Навіщо перепитуєш ?",
+    "Ти щось схоже вже питав"
+]
+let data_usual_answer = [
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+    {answer: "", count: 0},
+]
+let data_common_adverb = [
+    time = ["торік", "вчора", "завтра", "доти", "завжди", "досі", "зранку", "тоді", "довіку", "", "",],
+    place = ["там", "вгорі", "вперед", "спереду", "ззаду", "згори", "знизу", "вперед", "звідусіль", "там", "десь",],
+    goal = ["", "", "", "", "", "", "", "", "", "", "",],
+    reason = ["", "", "", "", "", "", "", "", "", "", "",]
+]
 
 let messages = [
     {
@@ -67,6 +140,7 @@ function modifyMessage(msg) {
             || msg.charCodeAt(i) == 63  //?
             || msg.charCodeAt(i) == 46  //.
             || msg.charCodeAt(i) == 32  //space
+            || msg.charCodeAt(i) == 1108  //є
             || (msg.charCodeAt(i) >= 1110 && msg.charCodeAt(i) <= 1111) //і-ї
         )
             msgCopy += msg.charAt(i)
@@ -371,160 +445,17 @@ function getQuestion(msg) {
     }
 }
 
-//todo дописати
-function isShortAnswer(msg) {
-    return true
-}
-
 function isPronoun(word) {
-    switch (word) {
-        case "я" :
+    for (let i = 0; i < data_pronoun.length; i++)
+        if (word === data_pronoun[i].pronoun)
             return true
-        case "мій" :
-            return true
-        case "мене" :
-            return true
-        case "мені" :
-            return true
-        case "мною" :
-            return true
-        case "ти" :
-            return true
-        case "тебе" :
-            return true
-        case "тобі" :
-            return true
-        case "тобою" :
-            return true
-        case "ми" :
-            return true
-        case "ви" :
-            return true
-        case "вона" :
-            return true
-        case "він" :
-            return true
-        case "воно" :
-            return true
-        case "вони" :
-            return true
-        case "твій" :
-            return true
-        case "наш" :
-            return true
-        case "ваш" :
-            return true
-        case "його" :
-            return true
-        case "її" :
-            return true
-        case "їх" :
-            return true
-        case "їхній" :
-            return true
-        case "той" :
-            return true
-        case "кожен" :
-            return true
-        case "хто" :
-            return true
-        case "кожний" :
-            return true
-        case "жодний" :
-            return true
-        case "жоден" :
-            return true
-        case "іниший" :
-            return true
-        case "сам" :
-            return true
-        case "сама" :
-            return true
-        case "самий" :
-            return true
-        case "ніхто" :
-            return true
-        case "себе" :
-            return true
-        default:
-            return false
-    }
+    return false
 }
 
 function changePronoun(pronoun) {
-    switch (pronoun) {
-        case "я" :
-            return "ти"
-        case "мій" :
-            return "твій"
-        case "мене" :
-            return "тебе"
-        case "мені" :
-            return "тобі"
-        case "мною" :
-            return "тобою"
-        case "ти" :
-            return "я"
-        case "тебе" :
-            return "мене"
-        case "тобі" :
-            return "мені"
-        case "тобою" :
-            return "мною"
-        case "твої" :
-            return "мої"
-        case "мої" :
-            return "твої"
-        case "ми" :
-            return "ми"
-        case "ви" :
-            return "ми"
-        case "вона" :
-            return "вона"
-        case "він" :
-            return "він"
-        case "воно" :
-            return "воно"
-        case "вони" :
-            return "вони"
-        case "твій" :
-            return "мій"
-        case "наш" :
-            return "наш"
-        case "ваш" :
-            return "ваш"
-        case "його" :
-            return "його"
-        case "її" :
-            return "її"
-        case "їх" :
-            return "їх"
-        case "їхній" :
-            return "їхній"
-        case "той" :
-            return "цей"
-        case "кожен" :
-            return "кожен"
-        case "хто" :
-            return "хто"
-        case "кожний" :
-            return "кожний"
-        case "жодний" :
-            return "жодний"
-        case "жоден" :
-            return "жоден"
-        case "іниший" :
-            return "інший"
-        case "сам" :
-            return "сам"
-        case "сама" :
-            return "сама"
-        case "самий" :
-            return "самий"
-        case "ніхто" :
-            return "ніхто"
-
-    }
+    for (let i = 0; i < data_pronoun.length; i++)
+        if (pronoun === data_pronoun[i].pronoun)
+            return data_pronoun[i].changedPronoun
 }
 
 // only for present tie
@@ -558,8 +489,10 @@ function getVerbTime(word) {
 
 // work only with present time
 function changeVerb(v, time = "inf") {
-    if (time === "present")
+    if (time === "present") {
+        // alert("Verb = " + v.slice(0, v.length - 2) + "ю")
         return v.slice(0, v.length - 2) + "ю"
+    }
     return v
 }
 
@@ -575,17 +508,22 @@ function changeQuestionToAnswer(msg) {
     let msg_arr = msg.toLowerCase().split(" ")
     let msg_changed = []
     for (let w of msg_arr) {
-        if (isPronoun(w))
+        if (isPronoun(w)) {
             msg_changed.push(changePronoun(w))
-        else if (isVerb(w)) {
+            debugger
+        } else if (isVerb(w)) {
             let time = getVerbTime(w)
             msg_changed.push(changeVerb(w, time))
-        } else
+            debugger
+        } else {
             msg_changed.push(w)
+            debugger
+        }
     }
     return msg_changed
 }
 
+console.log("є".charCodeAt(0))
 
 /**
  * QW- question word , Pr-pronoun , \\- another sentence
@@ -638,12 +576,20 @@ function getSentenceStructure(msg, qw = "") {
     return sentenceStructure
 }
 
+console.log(getSentenceStructure("приацюєш ти"))
+
+function generateAnswerToRepeatQuestion() {
+    let randomAnswer = Math.floor(Math.random() * data_repeat_phases.length)
+    return data_repeat_phases[randomAnswer]
+}
+
 function answerQuestion(msg) {
     console.log("isQuestion(msg)")
     if (isQuestionRepeat(msg)) {
         // code tha say that questions repeat
         alert("ти вже це казав")
         console.log("ти вже це казав")
+        return generateAnswerToRepeatQuestion()
     } else {
         //delete -- ?
         msg = msg.slice(0, msg.length)
@@ -651,17 +597,31 @@ function answerQuestion(msg) {
 
         let questionWord = findQuestionWord(msg)
         let question_arr = changeQuestionToAnswer(msg)
-
+        console.log(question_arr)
+        debugger
         let sentenceStructure = getSentenceStructure(msg, questionWord)
-        //     [ 'QW', '//', 'Pr', '//' ]
-        //     [ 'QW', '//', 'Pr' ]
-        //     [ 'QW', '//' ]
-        //     [ 'QW', 'Pr', '//' ]
-        //     [ 'QW', 'Pr' ]
-        //     [ 'Pr', '//' ]
         if (questionWord === "") {
-
+            //     [ 'Pr', '//' ]
+            let text_after_pronoun = []
+            let pronoun = []
+            let answer = []
+            if (arrayEquals(sentenceStructure, ["Pr", "//"])) {
+                for (let w of question_arr) {
+                    if (pronoun.length > 0) {
+                        text_after_pronoun.push(w)
+                    } else if (pronoun.length === 0 && isPronoun(w)) {
+                        pronoun.push(w)
+                    }
+                }
+            }
+            answer = pronoun.concat(["|"].concat(text_after_pronoun))
+            return answer.join(" ");
         } else {
+            //     [ 'QW', '//', 'Pr', '//' ]
+            //     [ 'QW', '//', 'Pr' ]
+            //     [ 'QW', '//' ]
+            //     [ 'QW', 'Pr', '//' ]
+            //     [ 'QW', 'Pr' ]
             let text_before_pronoun = []
             let text_after_pronoun = []
             let text_after_question = []
@@ -686,7 +646,9 @@ function answerQuestion(msg) {
                     } else if (w === questionWord && isQuestionWord(w))
                         question.push(w)
                 }
-                answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
+                // answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
+                answer = pronoun.concat(["|"].concat(text_before_pronoun.concat(["|"].concat(text_after_pronoun))))
+
             } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
                 debugger
                 for (let w of question_arr) {
@@ -700,7 +662,9 @@ function answerQuestion(msg) {
                     } else if (w === questionWord && isQuestionWord(w))
                         question.push(w)
                 }
-                answer = pronoun + "|" + text_before_pronoun
+                // answer = pronoun + "|" + text_before_pronoun
+                answer = pronoun.concat(["|"].concat(text_before_pronoun))
+
             } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
                 debugger
                 for (let w of question_arr) {
@@ -712,7 +676,8 @@ function answerQuestion(msg) {
                     } else if (w === questionWord && isQuestionWord(w))
                         question.push(w)
                 }
-                answer = text_after_question + "|"
+                // answer = text_after_question + "|"
+                answer = text_after_question.concat(["|"])
 
             } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
                 debugger
@@ -728,7 +693,7 @@ function answerQuestion(msg) {
                         question.push(w)
                 }
                 debugger
-                answer = pronoun + "|" + text_after_pronoun
+                answer = pronoun.concat(["|"].concat(text_after_pronoun))
             } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
                 debugger
                 for (let w of question_arr) {
@@ -746,6 +711,7 @@ function answerQuestion(msg) {
             }
             // todo тре подумать
             alert(answer)
+            return answer.join(" ")
         }
     }
 
@@ -808,7 +774,7 @@ function isShortAnswer(msg) {
 // todo Додати можливість запитувати не лише "А чому" а ще інші варіанти
 function askQuestionByAnswer(msg) {
     let disagree = findDisAgreeWords(msg)
-    if (disagree.length > 0){
+    if (disagree.length > 0) {
         return "А чому " + disagree[0] + " ?"
     }
     let agree = findAgreeWords(msg)
@@ -819,34 +785,37 @@ function askQuestionByAnswer(msg) {
 
 }
 
+function createQuestion(msg) {
+    if (countQuestions(msg) >= 1) {
+        let lastQuestion = getQuestion(msg)
+        return answerQuestion(lastQuestion)
+    } else {
+        if (isShortAnswer(msg)) {
+            askQuestionByAnswer(msg)
+            alert("А чого така коротка відповідь ?")
+            return "А чого така коротка відповідь ?"
+        } else {
+            // saidThatYouUnderstandAnswer()
+            alert("Я тебе ніби зрзумів але не оч")
+            return "Я тебе ніби зрзумів але не оч"
+        }
+    }
+}
+
+
 // todo дописати
 function generateBotAnswer(msg) {
     // isQuestionRepeat(msg)
     if (isQuestion(msg)) {
-        answerQuestion(msg)
+        return answerQuestion(msg)
     } else {
-        // if (isAnswerWithQuestion(msg)){}
-        if (countQuestions(msg) >= 1) {
-            let lastQuestion = getQuestion(msg)
-            answerQuestion(lastQuestion)
-            // if (answer_question()) {}
-            // else if (onlyQuestionWithoutAnswer()){}
-        } else {
-            if (isShortAnswer(msg)) {
-                askQuestionByAnswer(msg)
-                alert("А чого така коротка відповідь ?")
-            } else {
-                // saidThatYouUnderstandAnswer()
-                alert("Я тебе ніби зрзумів але не оч")
-            }
-        }
+        return createQuestion(msg)
     }
     return "бот хз"
 }
 
-function test(arr) {
+function test() {
 
 }
 
-console.log("привіт як ти? what are you doing ?".split("?"))
-
+test()
