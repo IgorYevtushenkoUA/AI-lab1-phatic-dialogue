@@ -1,6 +1,6 @@
 let data_agree_words = ["так", "да", "звичайно", "звісно", "авжеж", "однозначно", "безумовно", "безсумнівно", "дійсно", "позитивно", "рішучо", "та"]
 let data_disagree_words = ["ні", "нет", "не", "нє"]
-let data_short_answer = ["Окей", "Круто))", "Зрозумів", "ЯсноПонятно", "Хммм...Цікаво", "Прикольно", "Воу. Неочікувано", "Я думав ти інакше відповісиш", "Так і знав що ти так відповісиш", "Я передбачив твою відповідь. Ахахха", "Чомусь юув певен, що саме це і скажеш", "Передбачувана відповідь", "Непередбачувана відповідь", "Неочікувано", "Так, я так і знав", "Трохи збитий з пантелику з  твоєї відповіді"]
+let data_short_answer = ["Окей", "Круто))", "Зрозумів", "ЯсноПонятно", "Хммм...Цікаво", "Прикольно", "Воу. Неочікувано", "Я думав ти інакше відповісиш", "Так і знав що ти так відповісиш", "Я передбачив твою відповідь. Ахахха", "Чомусь був певен, що саме це і скажеш", "Передбачувана відповідь", "Непередбачувана відповідь", "Неочікувано", "Так, я так і знав", "Трохи збитий з пантелику з  твоєї відповіді"]
 let data_pronoun = [
     {pronoun: "я", changedPronoun: "ти"},
     {pronoun: "мій", changedPronoun: "твій"},
@@ -12,6 +12,7 @@ let data_pronoun = [
     {pronoun: "тобі", changedPronoun: "мені"},
     {pronoun: "тобою", changedPronoun: "мною"},
     {pronoun: "твої", changedPronoun: "мої"},
+    {pronoun: "твоїй", changedPronoun: "моїй"},
     {pronoun: "мої", changedPronoun: "твої"},
     {pronoun: "ми", changedPronoun: "ви"},
     {pronoun: "ви", changedPronoun: "ми"},
@@ -62,7 +63,7 @@ let data_repeat_phases = [
     "Навіщо перепитуєш ?",
     "Ти щось схоже вже питав"
 ]
-let data_hello = ["Привіт","Привіт, я справи ?", "Хай", "Здрастуй", "Привіт, радий буду поспілкуватися"]
+let data_hello = ["Привіт", "Привіт, я справи ?", "Хай", "Здрастуй", "Привіт, радий буду поспілкуватися"]
 let data_goodbye = [
     'Приємно було з тобою поговорити', 'Приємно було з тобою поспілкуватися',
     'Приємно було поспілкуватися з тобою', 'Відмінно поговорили',
@@ -93,14 +94,14 @@ let data_common_answers = [
 let data_common_question = {
     how: [
         {
-            question: "як часто ви купуєте одяг",
+            question: "як часто ти купуєш одяг",
             answer: {
                 answer: "Час від часу, змушений це робити",
                 answer_question: "Не так часто як хотілось би. А ви ?"
             },
         },
         {
-            question: "скільки мов ви знаєте",
+            question: "скільки мов ти знаєш",
             answer: {
                 answer: "Три: українську, польську та французьку",
                 answer_question: "Я не поліглот, тому бідно розмовляю англійською. А як у вас із мовами ?"
@@ -124,7 +125,10 @@ let data_common_question = {
                 answer_question: "Ніколи не рахував. А навіщо питаєте ?"
             },
         },
-        {question: "скільки у тебе", answer: {answer: "Достатньо", answer_question: "Важко сказати. А у тебе ?"},},
+        {
+            question: "скільки у тебе друзів",
+            answer: {answer: "Достатньо", answer_question: "Важко сказати. А у тебе ?"},
+        },
     ],
     who: [
         {
@@ -142,28 +146,28 @@ let data_common_question = {
             },
         },
         {
-            question: "ким хоче стати ваша дитина, коли він виросте",
+            question: "ким хоче стати твоя дитина, коли вона виросте",
             answer: {answer: "Програмістом", answer_question: "У мене немає дітай. А ваша ?"},
         },
         {
-            question: "хто ваш улюблений автор",
+            question: "хто твій улюблений автор",
             answer: {answer: "Немає улюбленого, обожнюю всіх", answer_question: "Жюль Верн. А ви ким захоплюєтеся ?"},
         },
         {question: "хто знає тебе краще за всіх", answer: {answer: "Сестра", answer_question: "Сестра. А тебе ?"},},
         {
-            question: "хто найрозумніша людина, якого ти знаєш",
+            question: "хто найрозумніша людина, яку ти знаєш",
             answer: {answer: "Мій дід", answer_question: "Мій дід Віктор. а ти ким захоплюєшся ?"},
         },
         {
-            question: "хто був із тобою",
+            question: "хто був із тобою вчора",
             answer: {answer: "Не пам'ятаю", answer_question: "Важко згадати. А чого питаєш ?"},
         },
         {
-            question: "з чим ти був сьогодні",
+            question: "з ким ти був сьогодні",
             answer: {answer: "Не пам'ятаю", answer_question: "Важко згадати. А чого питаєш ?"},
         },
         {
-            question: "хтось зробив щось хороше для тебе",
+            question: "хтось робив щось хороше для тебе",
             answer: {
                 answer: "Так. Таких було багато",
                 answer_question: "Так. Таких було багато. А що найнезабутніше тобі робили знайомі?"
@@ -176,7 +180,7 @@ let data_common_question = {
             answer: {answer: "А це нехай буде моїм невеличким секретом", answer_question: "Нічого. А ти ?"},
         },
         {
-            question: "що б ви хотіли змінити в собі, якби ти міг",
+            question: "що б ви хотіли змінити в собі якби ти міг",
             answer: {
                 answer: "Свою поведінку із страрими знайомими",
                 answer_question: "Напевно нічого, не знаю що б змінив би. А ти про це думав ?"
@@ -191,7 +195,7 @@ let data_common_question = {
             },
         },
         {
-            question: "що вам найбільше подобається у вашій роботі",
+            question: "що тобі найбільше подобається у твоїй роботі",
             answer: {answer: "Вирішувати невирішуване", answer_question: "Спілкування із людьми. А тобі ?"},
         },
         {
@@ -202,22 +206,22 @@ let data_common_question = {
             },
         },
         {
-            question: "що є найбільшим досягненням для вашої дитини",
+            question: "що є найбільшим досягненням для твоєї дитини",
             answer: {answer: "У мене немає дітей", answer_question: "У мене немає дітей. А в тебе вже є ?"},
         },
         {
-            question: "що змушує сміятися найбільше",
+            question: "що змушує тебе сміятися найбільше",
             answer: {answer: "Стендап", answer_question: "Степдап. Ти колись його дивився ?"},
         },
         {
-            question: "що ви думаєте про",
+            question: "що ти думаєш думаєте про вибори в америці",
             answer: {
                 answer: "Це дуже цікаво, але скажу наступного разу",
-                answer_question: "скажу наступного разу, Тільки не ображайся. Окей?"
+                answer_question: "Скажу наступного разу, Тільки не ображайся. Окей?"
             },
         },
         {
-            question: "що б ви зробили якби виграли в лотерею",
+            question: "що б ти зробив якби виграли в лотерею",
             answer: {
                 answer: "Мандрував би все життя",
                 answer_question: "Ахах, як тільки так відразу. а ти вже думав про це ?"
@@ -237,7 +241,7 @@ let data_common_question = {
     ],
     when: [
         {
-            question: "коли ти працював",
+            question: "коли ти востаннє працював",
             answer: {
                 answer: "не пам'ятаю точно, але це було нещодавно",
                 answer_question: "Буквально декілька днів тому. А чому саме це тебе цікавить ?"
@@ -251,11 +255,11 @@ let data_common_question = {
     ],
     where: [
         {
-            question: "де ви бачите себе через п'ять років?",
+            question: "де ти бачиш себе через п'ять років",
             answer: {answer: "У новій іт-компанії", answer_question: "У новій іт-компанії. А ти ?"},
         },
         {
-            question: "де ти бачиш себе через 10 років?",
+            question: "де ти бачиш себе через 10 років",
             answer: {answer: "У новій іт-компанії", answer_question: "У новій іт-компанії. А ти ?"},
         },
         {
@@ -279,14 +283,14 @@ let data_common_question = {
             answer: {answer: "Шалене весілля", answer_question: "Шалене весілля. А ти ?"},
         },
         {question: "яка твоя улюблена гра", answer: {answer: "Футбол", answer_question: "Волейбол. А твоя?"},},
-        {question: "які ваші захоплення", answer: {answer: "Малюання", answer_question: "Малювання. а твоє?"},},
-        {question: "яка ваше улюблена домашня тварина", answer: {answer: "Пес", answer_question: "Пес. А твоя?"},},
+        {question: "які твої захоплення", answer: {answer: "Малюання", answer_question: "Малювання. а твоє?"},},
+        {question: "яка твоя улюблена домашня тварина", answer: {answer: "Пес", answer_question: "Пес. А твоя?"},},
         {
             question: "яку річ ви б ніколи не зробили знову",
             answer: {answer: "Минулих помилок", answer_question: "Минулих помилок. А ти ?"},
         },
         {
-            question: "якие ваш улюблений сімейне свято, традиції",
+            question: "яке твоє улюблене сімейне свято, традиції",
             answer: {answer: "Новий Рік", answer_question: "Новий Рік. А твоє ?"},
         },
         {
@@ -305,12 +309,15 @@ let data_common_question = {
             answer: {answer: "Новий Рік", answer_question: "Новий Рікю А ти ?"},
         },
         {
-            question: "яке у вас улюблене заняття",
+            question: "яке у тебе улюблене заняття",
             answer: {answer: "Однозначно програмування", answer_question: "Немає. А в тебе?"},
         },
         {question: "який ти любиш шоколад", answer: {answer: "Я не люблю його", answer_question: "Всякий. а ти ?"},},
         {question: "в якому місті хотілося б жити", answer: {answer: "У Лондоні", answer_question: "У Лондоні. А ти"},},
-        {question: "в якій країні хотів би", answer: {answer: "В Англії", answer_question: "В Англії. А ти ?"},},
+        {
+            question: "в якій країні хотів би працювати",
+            answer: {answer: "В Англії", answer_question: "В Англії. А ти ?"},
+        },
         {question: "яка в тебе улюблена гра", answer: {answer: "Футбол", answer_question: "Футбол. А твоя ?"},},
         {
             question: "які книги любиш",
@@ -319,13 +326,13 @@ let data_common_question = {
     ],
     whom: [
         {
-            question: "Кого б ви відправили на безлюдний острів?",
+            question: "кого б ви відправили на безлюдний острів",
             answer: {answer: "Своїх ворогів. Ахахха", answer_question: "Ніколи про це не думав. А ти б кого ?"},
         },
     ],
     why: [
         {
-            question: "чому ти вічно все",
+            question: "чому ти вічно все перевіряєш",
             answer: {answer: "Не знаю, не думав проце", answer_question: "Хммм...Навіть не знаю. А як ти думаєш ?"},
         },
         {
@@ -334,58 +341,72 @@ let data_common_question = {
         },
     ],
     or: [
-        {question: "Чи допоміг ти комусь?", answer: {answer: "Так", answer_question: "Так. А ти ?"},},
-        {question: "Чи любите ви", answer: {answer: "Звичайно", answer_question: "Ні.. А ти?"},},
-        {question: "чи любиш ти", answer: {answer: "Звичайно", answer_question: "Ні.. А ти?"},},
-        {question: "чи був ти", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
-        {question: "чи були ви", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
-        {question: "чи знаєте ви", answer: {answer: "Ні", answer_question: "Так. а ти ?"},},
-        {question: "чи знаєш ти", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
-        {question: "чи працюєш ти", answer: {answer: "Так", answer_question: "Зараз ні. А ти ?"},},
-        {question: "чи працюєте ви", answer: {answer: "Ні", answer_question: "Зараз так, а ти?"},},
-        {question: "чи бачили ви", answer: {answer: "Звичайно", answer_question: "На жаль ні. А ти 7"},},
-        {question: "чи бачив ти", answer: {answer: "На жаль ні", answer_question: "На жаль так. А ти ?"},},
-        {question: "чи їздив ти в", answer: {answer: "Так таке було", answer_question: "Ні. А ти ?"},},
-        {question: "чи їздили ви в", answer: {answer: "Так таке було", answer_question: "Ні. а ти?"},},
-        {question: "чи часто ти робив", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
-        {question: "чи робив ти", answer: {answer: "Ні", answer_question: "Так. Так і ще раз Так. А ти ?"},},
+        {question: "чи допоміг ти комусь сьогодні", answer: {answer: "Так", answer_question: "Так. А ти ?"},},
+        {question: "чи любиш ти займатися спортом", answer: {answer: "Звичайно", answer_question: "Ні.. А ти?"},},
+        {question: "чи був ти на морі", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи знаєш ти про  новий айфон", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {question: "чи працюєш ти зараз", answer: {answer: "Так", answer_question: "Зараз ні. А ти ?"},},
+        {
+            question: "чи бачив ти знаменитостей",
+            answer: {answer: "На жаль ні", answer_question: "На жаль так. А ти ?"},
+        },
+        {question: "чи їздив ти в гімалаї", answer: {answer: "Так таке було", answer_question: "Ні. А ти ?"},},
+        {question: "чи часто ти робиш гімнастику", answer: {answer: "Так", answer_question: "Ні. А ти ?"},},
+        {
+            question: "чи робив ти щось щесь небезпечне",
+            answer: {answer: "Ні", answer_question: "Так. Так і ще раз Так. А ти ?"},
+        },
     ],
     if: [
         {
-            question: "якби ви могли жити в будь-якому місці, де б це було?",
-            answer: {answer: "", answer_question: ""},
+            question: "якби ти міг жити в будь-якому місці, де б це було",
+            answer: {answer: "Лондон. Однозначно Лондон", answer_question: "Київ. Однозначно Київ. А ти ?"},
         },
         {
-            question: "Якби ви могли вибрати робити що завгодно протягом дня, то що б це було?",
-            answer: {answer: "", answer_question: ""},
+            question: "якби ти міг вибрати робити що завгодно протягом дня то що б це було",
+            answer: {answer: "Дивився би серіали. Ахааххаха", answer_question: "Поїхав би в гори. А ти ?"},
         },
         {
-            question: "Ви б віддали перевагу: їздити на велосипеді, кататися на коні, водити машину?",
-            answer: {answer: "", answer_question: ""},
-        },
-        {question: "Якби ви могли найняти помічника, то для чого? ", answer: {answer: "", answer_question: ""},},
-        {
-            question: "Якби ви могли є тільки одне блюдо все ваше життя, що б це було?",
-            answer: {answer: "", answer_question: ""},
+            question: "ти б віддав перевагу: їздити на велосипеді, кататися на коні водити машину",
+            answer: {
+                answer: "Автівка. Сто відсотків автівка",
+                answer_question: "Я би покатався на коні, а ти колись на ньому їздив ?"
+            },
         },
         {
-            question: "Якби ви могли повернутися в минуле, в який рік ви б відправилися?",
-            answer: {answer: "", answer_question: ""},
+            question: "якби ти міг найняти помічника то для чого",
+            answer: {answer: "Для таймменеджменту", answer_question: "А він мені не треба. А ти би найняв би ?"},
         },
-        {question: "Як би ваші друзі охарактеризували вас?", answer: {answer: "", answer_question: ""},},
         {
-            question: "Якби ви могли повернутися в минуле, щоб змінити одну річ, що б це було?",
-            answer: {answer: "", answer_question: ""},
+            question: "якби ви могли повернутися в минуле, в який рік ви б відправилися",
+            answer: {answer: "2000", answer_question: "2000 купив би біткоїн. А ти в що зробив би ?"},
         },
-        {question: "Якби ти був супергероєм, яку силу ти б мав?", answer: {answer: "", answer_question: ""},},
+        {
+            question: "як би ваші друзі охарактеризували вас",
+            answer: {answer: "Всі по різному", answer_question: "Всі по різному. А тебе ?"},
+        },
+        {
+            question: "якби ви могли повернутися в минуле, щоб змінити одну річ, що б це було",
+            answer: {
+                answer: "Купив би долар по 8, ахахаха",
+                answer_question: "Не думав про таке. А ти б що зробив би ?"
+            },
+        },
+        {
+            question: "якби ти був супергероєм, яку силу ти б мав",
+            answer: {answer: "Бачити майбутнє", answer_question: "Однозначно літати. А ти б що обрав би?"},
+        },
         {
             question: "Якби ти міг поїхати куди завгодно, куди б ти поїхав",
-            answer: {answer: "", answer_question: ""},
+            answer: {answer: "Берлін", answer_question: "З цим карантином нікуди. А ти ?"},
         },
-        {question: "куди б ти поїхав", answer: {answer: "", answer_question: ""},},
+        {
+            question: "куди б ти поїхав",
+            answer: {answer: "Амстердам", answer_question: "У Харків до друзів. А ти б куди поїхав би?"},
+        },
         {
             question: "Якби у тебе було достатньо грошей, щоб не працювати, ти б працював чи ні",
-            answer: {answer: "", answer_question: ""},
+            answer: {answer: "Так. бо без цього було би нудно", answer_question: "Однозначно. А ти ?"},
         }
     ]
 }
@@ -639,6 +660,18 @@ function algorithmJaroWinkler(str1, str2) {
         }
     }
 
+    /**
+     * @param c — количество совпадающих символов.
+     * @param a — количество символов в первой строке,
+     * @param b — количество символов во второй строке
+     * @returns {number}
+     */
+    function coeffJacquard(c, a, b) {
+        return c / (a + b - c)
+    }
+
+    if (coeffJacquard(str1_arr_same, str1_arr, str2_arr) < 0.75) return 0
+
     let jaro_dist = jaro_distance(str1_arr_same, str2_arr_same)
     if (jaro_dist > 0.7) {
         let prefix = 0
@@ -705,15 +738,15 @@ function isQuestionRepeat(msg) {
     let sameWords = findTheMostSimilarMessage(msg)
     console.log("sameWords = " + sameWords)
 
-    /**
-     * @param c — количество совпадающих символов.
-     * @param a — количество символов в первой строке,
-     * @param b — количество символов во второй строке
-     * @returns {number}
-     */
-    function coeffJacquard(c, a, b) {
-        return c / (a + b - c)
-    }
+    // /**
+    //  * @param c — количество совпадающих символов.
+    //  * @param a — количество символов в первой строке,
+    //  * @param b — количество символов во второй строке
+    //  * @returns {number}
+    //  */
+    // function coeffJacquard(c, a, b) {
+    //     return c / (a + b - c)
+    // }
 
     if (sameWords.length > 0) {
         let c = sameWords[0].count
@@ -721,7 +754,11 @@ function isQuestionRepeat(msg) {
         let b = msg.split(" ")
         let s = sameWords[0].message
         console.log("same words = " + c)
-        if ((algorithmJaroWinkler(msg, s) > 0.9 || coeffJacquard(c, a, b) > 0.9) && c > 3) {
+        if (
+            // (
+            algorithmJaroWinkler(msg, s) > 0.9
+            // || coeffJacquard(c, a, b) > 0.74)
+            && c > 3) {
             different = true
         }
     }
@@ -997,8 +1034,16 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
             similar_question.push(similarQuestionID)
         }
     }
+    // для того аби відкинути всі варіанти де спільних слів 50 %
+    let coeff_50_percent = Math.floor(msg_arr.length / 2) + 1
+    console.log("coeff_50_percent = " + coeff_50_percent)
+    console.log('similar_question = ' + similar_question)
     //similar_question[0].questionID - якщо буде декілька речень із однаковою кількістю слів я поки не оброблюю
-    return (similar_question.length > 0 && similar_question[0].count > 0) ? similar_question[0].questionID : null
+    return (similar_question.length > 0
+        && similar_question[0].count >= coeff_50_percent
+    )
+        ? similar_question[0].questionID
+        : null
 }
 
 function isQuestionSimilarToQuestionFromDatabase(question, questionWord, questionID) {
@@ -1017,7 +1062,6 @@ function isHello(msg) {
         || msg.includes("хай") || msg.includes("хелоу") || msg.includes("здоров"))
 
 }
-
 
 function isGoodBye(msg) {
     return (msg.includes("бувай") || msg.includes("чао") || msg.includes("Приємно було з тобою")
@@ -1179,6 +1223,44 @@ function answerQuestion(msg) {
     }
 }
 
+function sayShortAnswer() {
+    return data_short_answer[Math.floor(Math.random() * data_short_answer.length)]
+
+}
+
+function getRandomQuestionWord() {
+    let allQuestionWords = 10
+    let num = Math.floor(Math.random() * allQuestionWords)
+    switch (num) {
+        case 0:
+            return "how"
+        case 1:
+            return "who"
+        case 2:
+            return "what"
+        case 3:
+            return "when"
+        case 4:
+            return "where"
+        case 5:
+            return "which"
+        case 6:
+            return "whom"
+        case 7:
+            return "why"
+        case 8:
+            return "or"
+        case 9:
+            return "if"
+    }
+}
+
+function askShortQuestion() {
+    let qw = getRandomQuestionWord()
+    let randIndex = Math.floor(Math.random() * data_common_question[qw].length)
+    return data_common_question[qw][randIndex].question
+}
+
 function createQuestion(msg) {
     if (countQuestions(msg) >= 1) {
         let lastQuestion = getQuestion(msg)
@@ -1189,7 +1271,9 @@ function createQuestion(msg) {
         } else {
             // saidThatYouUnderstandAnswer()
             alert("Я тебе ніби зрзумів але не оч")
-            return "Я тебе ніби зрзумів але не оч"
+
+            return Math.floor(Math.random() * 2) === 0 ? sayShortAnswer() : sayShortAnswer() + ". " + askShortQuestion()
+            // return "Я тебе ніби зрзумів але не оч"
         }
     }
 }
@@ -1202,13 +1286,11 @@ function generateBotAnswer(msg) {
         if (isHello(msg)) {
             debugger
             return sayHello()
-        }
-        else {
+        } else {
             debugger
             return "Забув привітатися ?." + sayHello()
         }
     } else if (isGoodBye(msg)) {
-        debugger
         return sayGoodbye()
     } else {
         debugger
