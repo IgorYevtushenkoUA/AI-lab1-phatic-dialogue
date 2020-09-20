@@ -1,10 +1,4 @@
-let messages = [
-    // {
-    //     sender: "person",
-    //     message: "Привіт як справи",
-    //     date: new Date()
-    // }
-]
+let messages = []
 
 /*{
 sender: "person",
@@ -40,6 +34,7 @@ function addMessage(msg, sender) {
      */
     let all_messages = document.getElementById("all_messages")
     let msgBlock = "<div class=" + "\"" + `${sender}` + "\"" + ">" + msg + "</div>"
+    // let msgBlock = "<div class=" + "\"" + `${sender}` + "\"" + "><pre>" + msg + "</pre></div>"
     all_messages.innerHTML += msgBlock
 }
 
@@ -362,12 +357,6 @@ function countQuestions(msg) {
 
 //todo improve
 function getQuestion(msg) {
-    // if (countQuestions(msg) === 1) return msg
-    // else {
-    //     // todo дописати якщо в повідомленні більше ніж 1 питання
-    //     return msg
-    // }
-
     let msg_arr = msg.split("?")
     msg_arr.pop()
     if (msg_arr.length === 1) {
@@ -505,6 +494,11 @@ function getSentenceStructure(msg, qw = "") {
     return sentenceStructure
 }
 
+/**
+ * Повертає заготовлену відповідь на питання що вже
+ * повторювалося(або є дуже схожим на якесь із всіх запитань користувача) у діалозі
+ * @returns {string}
+ */
 function generateAnswerToRepeatQuestion() {
     let randomAnswer = Math.floor(Math.random() * data_repeat_phases.length)
     return data_repeat_phases[randomAnswer]
@@ -586,6 +580,11 @@ function askQuestionByAnswer(msg) {
 
 }
 
+/**
+ * змінює питальне слово (українське) на відповідник в англійській мові
+ * @param question_word_ua
+ * @returns {string}
+ */
 function getEnglishQuestionWord(question_word_ua) {
     if (question_word_ua === "як" || question_word_ua === "скільки") return "how"
     if (question_word_ua === "ким" || question_word_ua === "хто" || question_word_ua === "яким" || question_word_ua === "хтось") return 'who'
@@ -642,8 +641,6 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
 }
 
 function isQuestionSimilarToQuestionFromDatabase(question, questionWord, questionID) {
-    alert()
-    debugger
     let questionFromDB = data_common_question[questionWord][questionID].question
     let different = false
     if (algorithmJaroWinkler(question, questionFromDB) > 0.85) return true
@@ -665,6 +662,7 @@ function isGoodBye(msg) {
 
 }
 
+
 function sayHello() {
     return data_hello[Math.floor(Math.random() * data_hello.length)]
 }
@@ -673,12 +671,22 @@ function sayGoodbye() {
     return data_goodbye[Math.floor(Math.random() * data_goodbye.length)]
 }
 
+/**
+ * Підвоить до верхнього регістру першу букву пуршого слова масиву
+ * @param arr
+ * @returns {string}
+ */
+function changeTabulation(arr) {
+        let firstWord = arr[0][0].toUpperCase() + arr[0].slice(1)
+        return firstWord + " " + arr.slice(1).join(" ")
+}
+
 function answerQuestion(msg) {
     if (isQuestionRepeat(msg)) {
         // code that says that questions repeat
         return generateAnswerToRepeatQuestion()
     } else {
-        //delete -- ?
+        //delete -> ?
         msg = msg.slice(0, msg.length)
         msg = getQuestion(msg)
 
@@ -690,16 +698,11 @@ function answerQuestion(msg) {
             && questionFromDB_ID !== null
             && isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)) {
             // знайти відповідь в базі даних та повернути загальну відповідь
-            // return "повторилося із бази даних "
-            debugger
             return Math.floor(Math.random() * 2) === 0
                 ? data_common_question[eng_qw][questionFromDB_ID].answer.answer
                 : data_common_question[eng_qw][questionFromDB_ID].answer.answer_question
         } else {
-            debugger
             let question_arr = changeQuestionToAnswer(msg)
-            console.log(question_arr)
-            debugger
             let sentenceStructure = getSentenceStructure(msg, questionWord)
             if (questionWord === "") {
                 //     [ 'Pr', '//' ]
@@ -715,7 +718,8 @@ function answerQuestion(msg) {
                         }
                     }
                 }
-                answer = pronoun.concat(["|"].concat(text_after_pronoun))
+                answer = pronoun.concat(text_after_pronoun)
+
                 return answer.join(" ");
             } else {
                 //     [ 'QW', '//', 'Pr', '//' ]
@@ -748,7 +752,7 @@ function answerQuestion(msg) {
                             question.push(w)
                     }
                     // answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
-                    answer = pronoun.concat(["|"].concat(text_before_pronoun.concat(["|"].concat(text_after_pronoun))))
+                    answer = pronoun.concat(text_before_pronoun.concat(text_after_pronoun))
 
                 } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
                     debugger
@@ -764,7 +768,7 @@ function answerQuestion(msg) {
                             question.push(w)
                     }
                     // answer = pronoun + "|" + text_before_pronoun
-                    answer = pronoun.concat(["|"].concat(text_before_pronoun))
+                    answer = pronoun.concat(text_before_pronoun)
 
                 } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
                     debugger
@@ -778,7 +782,7 @@ function answerQuestion(msg) {
                             question.push(w)
                     }
                     // answer = text_after_question + "|"
-                    answer = text_after_question.concat(["|"])
+                    answer = text_after_question
 
                 } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
                     debugger
@@ -794,7 +798,7 @@ function answerQuestion(msg) {
                             question.push(w)
                     }
                     debugger
-                    answer = pronoun.concat(["|"].concat(text_after_pronoun))
+                    answer = pronoun.concat(text_after_pronoun)
                 } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
                     debugger
                     for (let w of question_arr) {
@@ -811,8 +815,7 @@ function answerQuestion(msg) {
                     answer = []
                 }
                 // todo тре подумать
-                alert(answer)
-                return answer.join(" ")
+                return changeTabulation(answer)
             }
         }
     }

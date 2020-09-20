@@ -10,25 +10,21 @@
     <div class="container">
         <!--    <div style="overflow-y: scroll; height:400px;">-->
         <!--    </div>-->
+        <h3>K.I.R.P.I.C.H</h3>
+        <div id="all_messages"></div>
+
         <div>
-            <h3>K.I.R.P.I.C.H</h3>
-            <h3>як ти друже ?</h3>
-            <div id="all_messages"></div>
-        </div>
-        <div style="background-color: antiquewhite">
-            <div class="inline" style="background-color: aqua">
+            <div class="inline">
                 <textarea placeholder="Write a message..." id="message"></textarea>
+                <button id="btnSend" type="submit" onclick="sendMessage()"> Send</button>
             </div>
-            <div class="inline" style="background-color:blueviolet">
-                <button id="btnSend" onclick="sendMessage()"> Send</button>
-<!--                <button id="btnSend"> Send</button>-->
-            </div>
-            <!--            <input type="text" placeholder="Write a message..." id="message">-->
         </div>
     </div>
 </main>
 <footer>
-    here write github account
+    <a href="https://github.com/IgorYevtushenkoUA/AI-lab1-phatic-dialogue">
+        <img class="icon" src="./img/github.png" alt="github page" >
+    </a>
 </footer>
 
 <script src="./data/DataAgreeWords.js"></script>
