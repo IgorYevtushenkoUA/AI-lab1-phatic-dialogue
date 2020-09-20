@@ -1,4 +1,4 @@
-module.exports = data_pronoun = [
+let data_pronoun = [
     {pronoun: "я", changedPronoun: "ти"},
     {pronoun: "мій", changedPronoun: "твій"},
     {pronoun: "мене", changedPronoun: "тебе"},
@@ -9,6 +9,7 @@ module.exports = data_pronoun = [
     {pronoun: "тобі", changedPronoun: "мені"},
     {pronoun: "тобою", changedPronoun: "мною"},
     {pronoun: "твої", changedPronoun: "мої"},
+    {pronoun: "твоїй", changedPronoun: "моїй"},
     {pronoun: "мої", changedPronoun: "твої"},
     {pronoun: "ми", changedPronoun: "ви"},
     {pronoun: "ви", changedPronoun: "ми"},

@@ -1,1 +1,1 @@
-module.exports = data_disagree_words = ["ні", "нет", "не", "нє"]
+let data_disagree_words = ["ні", "нет", "не", "нє"]
