@@ -326,15 +326,6 @@ function isQuestionRepeat(msg) {
     console.log(findTheMostSimilarMessage(msg))
     let sameWords = findTheMostSimilarMessage(msg)
     console.log("sameWords = " + sameWords)
-    // /**
-    //  * @param c — количество совпадающих символов.
-    //  * @param a — количество символов в первой строке,
-    //  * @param b — количество символов во второй строке
-    //  * @returns {number}
-    //  */
-    // function coeffJacquard(c, a, b) {
-    //     return c / (a + b - c)
-    // }
     if (sameWords.length > 0) {
         let c = sameWords[0].count
         let a = sameWords[0].message.trim().split(" ").length
@@ -343,8 +334,6 @@ function isQuestionRepeat(msg) {
         console.log("same words = " + c)
         console.log(algorithmJaroWinkler(msg, s))
         console.log(coeffJacquard(c, a, b))
-        //alert("УВАГААААААААААААААААААААААААААААААААА")
-        ////debugger
         if (
             (algorithmJaroWinkler(msg, s) > 0.80
                 && coeffJacquard(c, a, b) > 0.80)
@@ -476,7 +465,6 @@ function getSentenceStructure(msg, qw = "") {
         } else {
             if ((sentenceStructure.length > 0
                 && sentenceStructure[sentenceStructure.length - 1] !== "//")
-                // ||sentenceStructure.length === 0
             )
                 sentenceStructure.push("//")
         }
@@ -634,9 +622,6 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
     let coeff_50_percent = Math.floor(msg_arr.length / 2) + 1
     console.log("coeff_50_percent = " + coeff_50_percent)
     console.log('similar_question = ' + similar_question)
-    //similar_question[0].questionID - якщо буде декілька речень із однаковою кількістю слів я поки не оброблюю
-    //alert("УВАГАААААА ")
-    //debugger
     return (similar_question.length > 0
         && similar_question[0].count > coeff_50_percent  // was >= -> >
     )
@@ -646,7 +631,6 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
 
 function isQuestionSimilarToQuestionFromDatabase(question, questionWord, questionID) {
     let questionFromDB = data_common_question[questionWord][questionID].question
-    //debugger
     if (algorithmJaroWinkler(question, questionFromDB) > 0.85) return true
     return false
 }
@@ -704,14 +688,10 @@ function answerQuestion(msg) {
         let questionWord = findQuestionWord(msg)
         let eng_qw = getEnglishQuestionWord(questionWord)
         let questionFromDB_ID = getIDSimilarQuestionExistInDB(msg, eng_qw)
-        // let  ono = isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)
-        //alert("!1111111111111111111111")
-        //debugger
         if (questionWord !== ""
             && questionFromDB_ID !== null
             && isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)) {
             // знайти відповідь в базі даних та повернути загальну відповідь
-            //debugger
             return Math.floor(Math.random() * 2) === 0
                 ? data_common_question[eng_qw][questionFromDB_ID].answer.answer
                 : data_common_question[eng_qw][questionFromDB_ID].answer.answer_question
@@ -733,7 +713,6 @@ function answerQuestion(msg) {
                     }
                 }
                 answer = pronoun.concat(text_after_pronoun)
-                //debugger
                 return arrayEquals(answer, []) ? getCommonAnswer() : answer.join(" ");
             } else {
                 //     [ 'QW', '//', 'Pr', '//' ]
@@ -765,11 +744,9 @@ function answerQuestion(msg) {
                         } else if (w === questionWord && isQuestionWord(w))
                             question.push(w)
                     }
-                    // answer = pronoun + "|" + text_before_pronoun + "|" + text_after_pronoun
                     answer = pronoun.concat(text_before_pronoun.concat(text_after_pronoun))
 
                 } else if (arrayEquals(sentenceStructure, ['QW', '//', 'Pr'])) {
-                    //debugger
                     for (let w of question_arr) {
                         if (question.length > 0) {
                             if (w === questionWord && isQuestionWord(w))
@@ -781,11 +758,9 @@ function answerQuestion(msg) {
                         } else if (w === questionWord && isQuestionWord(w))
                             question.push(w)
                     }
-                    // answer = pronoun + "|" + text_before_pronoun
                     answer = pronoun.concat(text_before_pronoun)
 
                 } else if (arrayEquals(sentenceStructure, ['QW', '//'])) {
-                    //debugger
                     for (let w of question_arr) {
                         if (question.length > 0) {
                             if (w === questionWord && isQuestionWord(w))
@@ -795,11 +770,9 @@ function answerQuestion(msg) {
                         } else if (w === questionWord && isQuestionWord(w))
                             question.push(w)
                     }
-                    // answer = text_after_question + "|"
                     answer = text_after_question
 
                 } else if (arrayEquals(sentenceStructure, ['QW', 'Pr', '//'])) {
-                    //debugger
                     for (let w of question_arr) {
                         if (question.length > 0) {
                             if (w === questionWord && isQuestionWord(w))
@@ -811,10 +784,8 @@ function answerQuestion(msg) {
                         } else if (w === questionWord && isQuestionWord(w))
                             question.push(w)
                     }
-                    //debugger
                     answer = pronoun.concat(text_after_pronoun)
                 } else if (arrayEquals(sentenceStructure, ['QW', 'Pr'])) {
-                    //debugger
                     for (let w of question_arr) {
                         if (question.length > 0) {
                             if (w === questionWord && isQuestionWord(w))
@@ -826,7 +797,6 @@ function answerQuestion(msg) {
                     }
                     answer = pronoun
                 } else {
-                    //debugger
                     answer = [""]
                 }
                 // todo тре подумать
@@ -882,14 +852,9 @@ function createQuestion(msg) {
         return answerQuestion(lastQuestion)
     } else {
         if (isShortAnswer(msg)) {
-            //alert('short answer')
             return askQuestionByAnswer(msg)
         } else {
-            // saidThatYouUnderstandAnswer()
-            //alert("Я тебе ніби зрзумів але не оч")
-
             return Math.floor(Math.random() * 2) === 0 ? sayShortAnswer() : sayShortAnswer() + ". " + askShortQuestion() + " ?"
-            // return "Я тебе ніби зрзумів але не оч"
         }
     }
 }
@@ -911,7 +876,7 @@ function generateBotAnswer(msg) {
             return createQuestion(msg)
         }
     }
-    return "бот хз"
+    return "Я не знаю"
 }
 
 
