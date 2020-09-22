@@ -10,3 +10,4 @@
 2. Натискааєте кнопку (Send)
 
 
+## [Посилання](https://github.com/IgorYevtushenkoUA/AI-lab1-phatic-dialogue)
