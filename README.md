@@ -11,3 +11,4 @@
 
 
 ## [Посилання](https://github.com/IgorYevtushenkoUA/AI-lab1-phatic-dialogue)
+https://github.com/IgorYevtushenkoUA/AI-lab1-phatic-dialogue
