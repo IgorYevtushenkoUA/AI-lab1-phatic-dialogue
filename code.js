@@ -19,22 +19,24 @@ function addNewMessage(msg, sender) {
     messages.push(message)
 }
 
+console.log(`getQuestion(msg) = '${getQuestion('ти як?')}'`)
+
 /**
  * addMessage(String msg, String sender)
  * @param msg
  * @param sender
  */
 function addMessage(msg, sender) {
-    addNewMessage(msg, sender)
+    //todo небезпечно хз як буде
+    let modifyMessage = getQuestion(msg)
+    addNewMessage(modifyMessage, sender)
     /** розбиваєммо на 2 блоки
      <div class="person">sdfsdf</div>
      <div class="bot">botANSWER</div>
 
-     де перший блок - це ЛЮДИНА, а другий це БОТ
-     */
+     де перший блок - це ЛЮДИНА, а другий це БОТ*/
     let all_messages = document.getElementById("all_messages")
     let msgBlock = "<div class=" + "\"" + `${sender}` + "\"" + ">" + msg + "</div>"
-    // let msgBlock = "<div class=" + "\"" + `${sender}` + "\"" + "><pre>" + msg + "</pre></div>"
     all_messages.innerHTML += msgBlock
 }
 
@@ -72,14 +74,12 @@ function sendMessage() {
     if (message !== "") {
         message = modifyMessage(message)
         addMessage(message, "person")
+        // clean message field
+        document.getElementById("message").value = ""
         //generate bot answer
         let botAnswer = generateBotAnswer(message)
         addMessage(botAnswer, "bot")
 
-        // showMessages()
-
-        // clean message field
-        document.getElementById("message").value = ""
     }
 }
 
@@ -165,6 +165,12 @@ function intToFloat(num, decPlaces = 4) {
     return num.toFixed(decPlaces);
 }
 
+/**
+ * повертає коефіцієнт дистанції між словами
+ * @param str1_arr_same
+ * @param str2_arr_same
+ * @returns {number}
+ */
 function jaro_distance(str1_arr_same, str2_arr_same) {
     console.log('str1_arr_same = ' + str1_arr_same)
     console.log('str2_arr_same = ' + str2_arr_same)
@@ -213,13 +219,21 @@ function jaro_distance(str1_arr_same, str2_arr_same) {
         + (intToFloat(match - t)) / (intToFloat(match))) / 3.0
 }
 
+/**
+ * @param c — количество совпадающих символов.
+ * @param a — количество символов в первой строке,
+ * @param b — количество символов во второй строке
+ * @returns {number}
+ */
+function coeffJacquard(c, a, b) {
+    alert("УВАГАААААА =========    coeffJacquard")
+    return c / (a + b - c)
+}
+
 function algorithmJaroWinkler(str1, str2) {
-    /* знаходимо спільні слова і записуємо їх в масив str1_arr_same
-у тому порядку у якому вони зустрічаються
-далі записуємо слова у тому порядку
-у якому вони повторюються до str2_arr_same
-це для алгоритму Сходство Джаро — Винклера
-* */
+    /* знаходимо спільні слова і записуємо їх в масив str1_arr_same у тому порядку у якому вони зустрічаються
+    далі записуємо слова у тому порядку у якому вони повторюються до str2_arr_same
+    це для алгоритму схожості Джаро — Винклера */
     let str1_arr = str1.toLowerCase().split(" ")
     let str2_arr = str2.toLowerCase().split(" ")
     let str1_arr_same = []
@@ -242,19 +256,17 @@ function algorithmJaroWinkler(str1, str2) {
         }
     }
 
-    /**
-     * @param c — количество совпадающих символов.
-     * @param a — количество символов в первой строке,
-     * @param b — количество символов во второй строке
-     * @returns {number}
-     */
-    function coeffJacquard(c, a, b) {
-        return c / (a + b - c)
+
+    if (coeffJacquard(str1_arr_same, str1_arr, str2_arr) < 0.75) {
+        console.log('str1_arr_same = ' + str1_arr_same)
+        console.log('str1_arr = ' + str1_arr)
+        console.log('str2_arr = ' + str2_arr)
+        alert("coeffJacquard  === 0")
+        return 0
     }
-
-    if (coeffJacquard(str1_arr_same, str1_arr, str2_arr) < 0.75) return 0
-
     let jaro_dist = jaro_distance(str1_arr_same, str2_arr_same)
+    alert("Увагаааааа ======  jaro_dist")
+    debugger
     if (jaro_dist > 0.7) {
         let prefix = 0
         for (let i = 0; i < Math.min(str1_arr_same.length, str2_arr_same.length); i++) {
@@ -262,7 +274,6 @@ function algorithmJaroWinkler(str1, str2) {
                 prefix++
             else break
         }
-        //TODO чого 4  - зрозуміти // Maximum of 4 characters are allowed in prefix
         prefix = Math.min(4, prefix)
         jaro_dist += 0.1 * prefix * (1 - jaro_dist);
     }
@@ -319,7 +330,6 @@ function isQuestionRepeat(msg) {
     console.log(findTheMostSimilarMessage(msg))
     let sameWords = findTheMostSimilarMessage(msg)
     console.log("sameWords = " + sameWords)
-
     // /**
     //  * @param c — количество совпадающих символов.
     //  * @param a — количество символов в первой строке,
@@ -329,18 +339,20 @@ function isQuestionRepeat(msg) {
     // function coeffJacquard(c, a, b) {
     //     return c / (a + b - c)
     // }
-
     if (sameWords.length > 0) {
         let c = sameWords[0].count
-        let a = sameWords[0].message.split(" ").length
-        let b = msg.split(" ")
+        let a = sameWords[0].message.trim().split(" ").length
+        let b = msg.split(" ").length
         let s = sameWords[0].message
         console.log("same words = " + c)
+        console.log(algorithmJaroWinkler(msg, s))
+        console.log(coeffJacquard(c, a, b))
+        alert("УВАГААААААААААААААААААААААААААААААААА")
+        debugger
         if (
-            // (
-            algorithmJaroWinkler(msg, s) > 0.9
-            // || coeffJacquard(c, a, b) > 0.74)
-            && c > 3) {
+            (algorithmJaroWinkler(msg, s) > 0.80
+                && coeffJacquard(c, a, b) > 0.80)
+            && (c > 3 || c >= a)) {
             different = true
         }
     }
@@ -355,18 +367,25 @@ function countQuestions(msg) {
     return count
 }
 
-//todo improve
+console.log("ти як".split("?"))
+
+/**
+ * якщо декілька питань - відповідає на останнє
+ * @param msg
+ * @returns {string|*}
+ */
 function getQuestion(msg) {
     let msg_arr = msg.split("?")
     msg_arr.pop()
-    if (msg_arr.length === 1) {
-        return msg
+    if (msg_arr.length <= 1) {
+        return msg.charAt(msg.length - 1) === '?' ? msg.slice(0, msg.length - 1) : msg
     } else {
         // відповісти на останнє питання
-        alert(msg_arr[msg_arr.length - 1] + "?")
-        return msg_arr[msg_arr.length - 1] + "?"
+        return msg_arr[msg_arr.length - 1]
     }
 }
+
+console.log(getQuestion("як ти ? коли приїжджаєш ?"))
 
 function isPronoun(word) {
     for (let i = 0; i < data_pronoun.length; i++)
@@ -413,7 +432,6 @@ function getVerbTime(word) {
 // work only with present time
 function changeVerb(v, time = "inf") {
     if (time === "present") {
-        // alert("Verb = " + v.slice(0, v.length - 2) + "ю")
         return v.slice(0, v.length - 2) + "ю"
     }
     return v
@@ -443,7 +461,7 @@ function changeQuestionToAnswer(msg) {
     return msg_changed
 }
 
-/**
+/** шукаає структуру речення
  * QW- question word , Pr-pronoun , \\- another sentence
  * QW + \\
  * QW + \\ + Pr
@@ -543,10 +561,6 @@ function findDisAgreeWords(msg) {
  * @returns {boolean}
  */
 function isShortAnswer(msg) {
-    // якщо це відповідь на моє питання
-    // якщо відповідь коротка --- тут неоднозначно
-    // якщо вна місти слова згоди та незгоди
-    // то це коротка відповідь
     alert(findDisAgreeWords(msg))
     let coeff_short = 5
     if (isAnswerOnMyQuestion()
@@ -563,17 +577,12 @@ function isShortAnswer(msg) {
 // todo Додати можливість запитувати не лише "А чому" а ще інші варіанти
 function askQuestionByAnswer(msg) {
     let disagree = findDisAgreeWords(msg)
-    console.log(disagree)
-    console.log(msg)
-    debugger
     if (disagree.length > 0) {
-        debugger
         console.log(disagree[0]);
         return "А чому " + disagree[0] + " ?"
     }
     let agree = findAgreeWords(msg)
     if (agree.length > 0) {
-        debugger
         return "А чому " + agree[0] + " ?"
     }
     return "Зрозуміло"
@@ -604,7 +613,8 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
     let similar_question = [] // {питання}
     let msg_arr = msg.toLowerCase().split(" ")
     // на той випадок яко питального слова не знайдено
-    if (data_common_question[eng_qw] === undefined) return null
+    if (data_common_question[eng_qw] === undefined)
+        return null
     for (let i = 0; i < data_common_question[eng_qw].length; i++) {
         let count = 0
         let question = data_common_question[eng_qw][i].question.split(" ")
@@ -628,13 +638,15 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
             similar_question.push(similarQuestionID)
         }
     }
-    // для того аби відкинути всі варіанти де спільних слів 50 %
+    // для того аби відкинути всі варіанти де спільних слів менше 50 %
     let coeff_50_percent = Math.floor(msg_arr.length / 2) + 1
     console.log("coeff_50_percent = " + coeff_50_percent)
     console.log('similar_question = ' + similar_question)
     //similar_question[0].questionID - якщо буде декілька речень із однаковою кількістю слів я поки не оброблюю
+    alert("УВАГАААААА ")
+    debugger
     return (similar_question.length > 0
-        && similar_question[0].count >= coeff_50_percent
+        && similar_question[0].count > coeff_50_percent  // was >= -> >
     )
         ? similar_question[0].questionID
         : null
@@ -642,7 +654,7 @@ function getIDSimilarQuestionExistInDB(msg, eng_qw) {
 
 function isQuestionSimilarToQuestionFromDatabase(question, questionWord, questionID) {
     let questionFromDB = data_common_question[questionWord][questionID].question
-    let different = false
+    debugger
     if (algorithmJaroWinkler(question, questionFromDB) > 0.85) return true
     return false
 }
@@ -662,7 +674,6 @@ function isGoodBye(msg) {
 
 }
 
-
 function sayHello() {
     return data_hello[Math.floor(Math.random() * data_hello.length)]
 }
@@ -671,33 +682,44 @@ function sayGoodbye() {
     return data_goodbye[Math.floor(Math.random() * data_goodbye.length)]
 }
 
+function getCommonAnswer() {
+    return data_common_answers[Math.floor(Math.random() * data_common_answers.length)]
+}
+
 /**
  * Підвоить до верхнього регістру першу букву пуршого слова масиву
  * @param arr
  * @returns {string}
  */
 function changeTabulation(arr) {
-        let firstWord = arr[0][0].toUpperCase() + arr[0].slice(1)
-        return firstWord + " " + arr.slice(1).join(" ")
+    if (arrayEquals(arr, [""])) {
+        return getCommonAnswer()
+    }
+    let firstWord = arr[0][0].toUpperCase() + arr[0].slice(1)
+    return firstWord + " " + arr.slice(1).join(" ")
 }
 
 function answerQuestion(msg) {
+
+    //delete -> ?
+    msg = msg.slice(0, msg.length - 1).trim()
+    msg = getQuestion(msg)
+    alert(`message = '${msg}'`)
     if (isQuestionRepeat(msg)) {
         // code that says that questions repeat
         return generateAnswerToRepeatQuestion()
     } else {
-        //delete -> ?
-        msg = msg.slice(0, msg.length)
-        msg = getQuestion(msg)
-
         let questionWord = findQuestionWord(msg)
         let eng_qw = getEnglishQuestionWord(questionWord)
         let questionFromDB_ID = getIDSimilarQuestionExistInDB(msg, eng_qw)
+        // let  ono = isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)
+        alert("!1111111111111111111111")
         debugger
         if (questionWord !== ""
             && questionFromDB_ID !== null
             && isQuestionSimilarToQuestionFromDatabase(msg, eng_qw, questionFromDB_ID)) {
             // знайти відповідь в базі даних та повернути загальну відповідь
+            debugger
             return Math.floor(Math.random() * 2) === 0
                 ? data_common_question[eng_qw][questionFromDB_ID].answer.answer
                 : data_common_question[eng_qw][questionFromDB_ID].answer.answer_question
@@ -719,8 +741,8 @@ function answerQuestion(msg) {
                     }
                 }
                 answer = pronoun.concat(text_after_pronoun)
-
-                return answer.join(" ");
+                debugger
+                return arrayEquals(answer, []) ? getCommonAnswer() : answer.join(" ");
             } else {
                 //     [ 'QW', '//', 'Pr', '//' ]
                 //     [ 'QW', '//', 'Pr' ]
@@ -812,7 +834,8 @@ function answerQuestion(msg) {
                     }
                     answer = pronoun
                 } else {
-                    answer = []
+                    debugger
+                    answer = [""]
                 }
                 // todo тре подумать
                 return changeTabulation(answer)
@@ -879,44 +902,21 @@ function createQuestion(msg) {
 // todo дописати
 function generateBotAnswer(msg) {
     if (messages.length < 2) {
-        debugger
         if (isHello(msg)) {
-            debugger
             return sayHello()
         } else {
-            debugger
             return "Забув привітатися ?." + sayHello()
         }
     } else if (isGoodBye(msg)) {
         return sayGoodbye()
     } else {
-        debugger
         if (isQuestion(msg)) {
-            debugger
             return answerQuestion(msg)
         } else {
-            debugger
             return createQuestion(msg)
         }
     }
     return "бот хз"
 }
 
-function test() {
-    let data = {
-        how: [
-            {question: "Як часто ви купуєте одяг?", answer: {answer: "1", answer_question: ""},},
-            {question: "Скільки мов ви знаєте?", answer: {answer: "", answer_question: ""},},
-            {question: "скільки у тебе було близьких друзів", answer: {answer: "", answer_question: ""},},
-            {question: "скільки ти хочеш мати дітей", answer: {answer: "", answer_question: ""},},
-            {question: "Скільки пар взуття у вас?", answer: {answer: "", answer_question: ""},},
-            {question: "скільки у тебе", answer: {answer: "3", answer_question: ""},},
-        ]
-    }
-    // for (let i = 0; i < data.how.length; i++) {
-    //     console.log(data['how'][i].answer.answer)
-    // }
 
-}
-
-test()

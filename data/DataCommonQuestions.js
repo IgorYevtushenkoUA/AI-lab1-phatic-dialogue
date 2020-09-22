@@ -1,6 +1,27 @@
 let data_common_question = {
     how: [
         {
+            question: "як ти почуваєшся",
+            answer: {
+                answer: "Нормально",
+                answer_question: "Чудово. А ти як почуваєш ?"
+            },
+        },
+        {
+            question: "як ти відпочив",
+            answer: {
+                answer: "Занадто швидко пройшов відпочинок, але дуже класно відпочив",
+                answer_question: "Чудово. А ти як ?"
+            },
+        },
+        {
+            question: "як ти себе почуваєш",
+            answer: {
+                answer: "Прекрасно, себе почуваю",
+                answer_question: "Чудово. А ти як себе почуваєш ?"
+            },
+        },
+        {
             question: "як часто ти купуєш одяг",
             answer: {
                 answer: "Час від часу, змушений це робити",

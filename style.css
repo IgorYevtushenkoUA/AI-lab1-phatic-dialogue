@@ -1,3 +1,7 @@
+body {
+    background-color: #FAFDFF;
+}
+
 button {
     background-color: #f0ad4e; /* Green */
     border: none;
@@ -8,7 +12,6 @@ button {
     font-size: 20px;
     border-radius: 10px;
     outline: none;
-
 }
 
 textarea {
@@ -54,7 +57,6 @@ textarea {
     border-radius: 10px;
     font-size: 20px;
     padding: 5px 5px 5px 0;
-    /*margin: 5px;*/
     margin-left: auto;
 }
 .icon {
